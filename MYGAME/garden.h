@@ -125,20 +125,20 @@ sf::Sprite strawberrytoline;
     sf::Texture truskawkazdj;
     sf::Sprite truskawka;
     sf::Vector2f originalScale;
-   std::vector<char> planting;  
-int position;
-   sf::Texture tankphoto;
-   sf::Texture pointsphoto;
-   sf::Sprite points;
+    std::vector<char> planting;  
+    int position;
+    sf::Texture tankphoto;
+    sf::Texture pointsphoto;
+    sf::Sprite points;
 
-char plantt;
-bool openwerehouse = false;
-bool sorrywiondowisopen = true;
+    char plantt;
+    bool openwerehouse = false;
+    bool sorrywiondowisopen = true;
 
-time_t czas; 
-tm* czas_info;
+    time_t czas; 
+    tm* czas_info;
 
-std::vector<sf::Sprite> pszenicaSprites;
+    std::vector<sf::Sprite> pszenicaSprites;
 
     void handleEvents();
     void render();

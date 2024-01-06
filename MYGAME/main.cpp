@@ -8,6 +8,7 @@
 #include "shop.h"
 #include "guziksklep.h"
 #include "orchard.h"
+#include "hodowla.h"
 
 int main() {
 
@@ -19,8 +20,8 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(1200, 800), "handlarz");
    window.setFramerateLimit(60);
 
-    static Orchard orchard(window);
-    orchard.run();
+    static Hodowla hodowla(window);
+     hodowla.run();
 
     return 0;
 }

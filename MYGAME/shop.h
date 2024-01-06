@@ -71,7 +71,7 @@ private:
 
     std::vector<char> zbiornik;
     std::vector<char> wypisz;
-    std::vector<int> letter= {0,0,0,0};
+    std::vector<int> letter= {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
     bool found;
 

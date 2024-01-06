@@ -58,6 +58,8 @@ std::vector<sf::Clock> timeElapsed;
 
 std::vector<int> positionss;
 
+bool testy = false;
+
 
     Guzik exit;
     sf::Texture exittextur;

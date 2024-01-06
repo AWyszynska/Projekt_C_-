@@ -4,6 +4,8 @@
 #include "garden.h"
 #include "shop.h"
 #include "orchard.h"
+#include "cave.h"
+#include "hodowla.h"
 #include <vector> 
 #include <fstream>
 
@@ -67,7 +69,9 @@ sf::Text text;
 
     void switchToGarden();
     void switchToShop();
+    void switchToCave();
     void switchToOrchard();
+    void switchToHodowla();
     void handleEvents();
     void loadedplace();
     void render();

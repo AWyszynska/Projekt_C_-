@@ -243,6 +243,46 @@ int displayedVal = 0;
                 displayedValues++;
             }
         }
+        else if (znak == 'I') {//miedz
+
+            if (obraz9.loadFromFile("kopalnia/sztabkamiedz.png")) {
+                sf::Sprite sprite(obraz9);
+                sprite.setPosition(position,720); 
+                sprite.setScale(0.25f, 0.25f);
+                window.draw(sprite);
+                displayedValues++;
+            }
+        }
+        else if (znak == 'R') {//srebro
+
+            if (obraz9.loadFromFile("kopalnia/sztabkasrebro.png")) {
+                sf::Sprite sprite(obraz9);
+                sprite.setPosition(position,720); 
+                sprite.setScale(0.25f, 0.25f);
+                window.draw(sprite);
+                displayedValues++;
+            }
+        }
+        else if (znak == 'L') {//zloto
+
+            if (obraz9.loadFromFile("kopalnia/sztabkazloto.png")) {
+                sf::Sprite sprite(obraz9);
+                sprite.setPosition(position,720); 
+                sprite.setScale(0.25f, 0.25f);
+                window.draw(sprite);
+                displayedValues++;
+            }
+        }
+        else if (znak == 'D') {//diament
+
+            if (obraz9.loadFromFile("kopalnia/diament.png")) {
+                sf::Sprite sprite(obraz9);
+                sprite.setPosition(position-10,720); 
+                sprite.setScale(0.25f, 0.25f);
+                window.draw(sprite);
+                displayedValues++;
+            }
+        }
         position += interval;
     }
             xPos = 220;
@@ -286,6 +326,12 @@ void Game::handleEvents() {
              if (sad.isHoveredButton()) {
                 switchToOrchard();
             }
+            if (kopalnia.isHoveredButton()) {
+                switchToCave();
+            }
+            if (hodowla.isHoveredButton()) {
+                switchToHodowla();
+            }
         }
     }
 }
@@ -304,6 +350,8 @@ void Game::render()
         hodowla.draw();
         sklep.handleMouseInteraction();
         sklep.draw();
+        hodowla.handleMouseInteraction();
+        hodowla.draw();
         window.draw(pasek);
         window.draw(skrzynka);
         std::ifstream zlotowkiFile("zlotowki_value.txt");
@@ -340,7 +388,17 @@ void Game::switchToOrchard() {
     orchard.run();
 }
 
+void Game::switchToCave() {
 
+    Cave cave(window);
+    cave.run();
+}
+
+void Game::switchToHodowla() {
+
+    Hodowla hodowla(window);
+    hodowla.run();
+}
 
 
 

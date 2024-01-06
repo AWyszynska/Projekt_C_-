@@ -235,7 +235,7 @@ bool foundExisting = false;
     currentX += imageSpacing;
     newImage.sprite.setScale(0.2f, 0.2f);
 
-            newClock.restart(); // Resetowanie czasu dla nowego zegara
+            newClock.restart(); 
             clocksadzonki.push_back(newClock);
             clocksadzonki[i].restart();
                          if(timess.size()>0){
@@ -446,7 +446,7 @@ int displayedValues = 0;
 int displayedVal = 0;
     for (int i = 0; i < ReadSigns.size(); i++ ) {
         if (displayedValues >= 4) {
-            break; // Przerwij pętlę po wyświetleniu 3 wartości
+            break; 
         }
         if (ReadSigns[i] == 'P' ) {
            
@@ -642,7 +642,7 @@ void Orchard::handleEvents() {
             if (exit.isHoveredButton()) {
                 switchTofarm();
             }
-        else if(added <4){
+        else if(added <3){
              if  (sprite4.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) && zasadzonepszenica) {
                 for(int i = 0; i <ReadSigns.size() ; i++){
                          if(ReadSigns[i] == 'J'){
@@ -925,7 +925,7 @@ changeImage();
         window.draw(dokopiec);
         window.draw(dokopiec2);
         window.draw(dokopiec3);
-
+std::cout<<added<<std::endl;
         addstorage();
 addToPasek();
         if(openwerehouse){

@@ -117,14 +117,12 @@ void Garden::loadTimes() {
         if (std::getline(timeFile, line)) {
             std::tm timeInfo = {};
 
-            // Parsowanie daty i czasu ze wzorcem przy użyciu sscanf
             char day[4], month[4];
             int dayNum, hour, min, sec, year;
 
             if (std::sscanf(line.c_str(), "%3s %3s %d %d:%d:%d %d",
                             day, month, &dayNum, &hour, &min, &sec, &year) == 7) {
 
-                // Konwersja nazw miesięcy i dni tygodnia na liczby
                 const char* months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
                 const char* days[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
@@ -942,13 +940,7 @@ void Garden::render()
         
 
 changeImage();  
-//std::cout<<added<<std::endl;
-//for(int i = 0; i<ReadSigns.size();i++){
-//std::cout<<ReadSigns[i]<<std::endl;
-//std::cout<<Readvalues[i]<<std::endl;
-//}
-//std::cout << "Różnica czasu wynosi: " << difference.count() << " sekund." << std::endl;
-//std::cout<<added<<std::endl;
+
         window.draw(dokopiec);
         window.draw(dokopiec2);
         window.draw(dokopiec3);
@@ -985,7 +977,7 @@ void Garden::switchTofarm() {
     savePlantingInfo();
     savetimeall();
     savepositionAdditional();
-switchplace();
+    switchplace();
     Game game(window);
     game.run();
     
