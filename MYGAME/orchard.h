@@ -10,6 +10,7 @@
 #include <ctime>
 #include <sstream>
 #include "openall.h"
+#include "mousehoverdisplay.h"
 
 class Orchard {
 
@@ -21,7 +22,7 @@ public:
     void handleSadzonkaInteraction();
     void changeImage();
     void run();
-
+~Orchard();
 private:
 
 struct DisplayedImage {
@@ -32,7 +33,7 @@ struct DisplayedImage {
 };
 std::vector<sf::Clock> clocksadzonki;
 sf::Clock newClock;
-
+Openall* openall;
 float differenceInSeconds;
 std::chrono::duration<double> difference = std::chrono::duration<double>::zero();
 std::vector<DisplayedImage> displayedImages;
@@ -145,7 +146,12 @@ bool sorrywiondowisopen = true;
 
 time_t czas; 
 tm* czas_info;
-
+    bool pomocotwarta = false;
+    sf::Texture zapytaniezdj;
+    sf::Sprite znakzapytania;
+    sf::Texture tablicapomoczdj;
+    sf::Sprite tablicapomoc;
+    sf::Sprite wyjscietablica;
 std::vector<sf::Sprite> pszenicaSprites;
 
     void handleEvents();
@@ -166,5 +172,7 @@ std::vector<sf::Sprite> pszenicaSprites;
     void bleeaddtoline();
     void switchplace();
     bool addedblee = false;
+    void addhelp();
+    void znakpomocy();
 
 };

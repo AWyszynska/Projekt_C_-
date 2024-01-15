@@ -7,7 +7,8 @@ Orchard::Orchard(sf::RenderWindow& window) : window(window),
 zlotowkiFile("zlotowki_value.txt"),
      isRunning(true),
     exit(window, sf::Vector2f(50, 50), sf::Vector2f(100, 100)),
-    isSadzonkaPressed(false),currentImage(0),currentX(-25.0f)  {
+    isSadzonkaPressed(false),currentImage(0),currentX(-25.0f),openall(nullptr)
+      {
     window.setFramerateLimit(60);
 
     if (!backgroundTexture.loadFromFile("zdjeciasad/zdjeciesadu.png")) {
@@ -204,7 +205,7 @@ bool foundExisting = false;
             newClock.restart(); // Resetowanie czasu dla nowego zegara
             clocksadzonki.push_back(newClock);
             clocksadzonki[i].restart();
-            newImage.sprite.setPosition(newImage.positionX, 480.0f);
+            newImage.sprite.setPosition(newImage.positionX + 280.0f, 480.0f);
              currentX += imageSpacing;
             newImage.sprite.setScale(0.2f, 0.2f);
              if(timess.size()>0){
@@ -284,13 +285,13 @@ timess.erase(timess.begin());
     }
 
 
-       else if (planting[i] == 'J') {
+      if (planting[i] == 'J') {
         if (displayedImages[i].timer.asSeconds()  >= 10 && !displayedImages[i].isThirdImageDisplayed) {
             if (!psze2.loadFromFile("zdjeciasad/jablko3.png")) {
                 std::cerr << "Błąd podczas wczytywania tła." << std::endl;
             }
             displayedImages[i].sprite.setTexture(psze2);
-            displayedImages[i].sprite.setPosition(displayedImages[i].positionX  - 90.0f, 190.0f);
+            displayedImages[i].sprite.setPosition(displayedImages[i].positionX  + 195.0f, 190.0f);
 
             displayedImages[i].sprite.setScale(0.6f, 0.6f);
             displayedImages[i].isThirdImageDisplayed = true;
@@ -299,7 +300,7 @@ timess.erase(timess.begin());
                 std::cerr << "Błąd podczas wczytywania tła." << std::endl;
             }
             displayedImages[i].sprite.setTexture(psze3);
-            displayedImages[i].sprite.setPosition(displayedImages[i].positionX - 65.0f, 243.0f);
+            displayedImages[i].sprite.setPosition(displayedImages[i].positionX + 210.0f, 243.0f);
 
             displayedImages[i].sprite.setScale(0.7f, 0.7f);
         }
@@ -444,7 +445,11 @@ void Orchard::addToPasek(){
     int interval = 150;
 int displayedValues = 0;
 int displayedVal = 0;
-    for (int i = 0; i < ReadSigns.size(); i++ ) {
+    //MouseHoverDisplay hoverDisplay(window, ReadSigns,true);
+    //sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+    //hoverDisplay.displayImageOnHover(mousePosition);
+    int numIterations = std::min(static_cast<int>(ReadSigns.size()), 4);
+    for (int i = 0; i < numIterations; i++ ) {
         if (displayedValues >= 4) {
             break; 
         }
@@ -570,13 +575,79 @@ int displayedVal = 0;
                 window.draw(sprite9);
                 displayedValues++;
             }
+        }else if (ReadSigns[i] == 'I') {//miedz
+
+            if (obraz9.loadFromFile("kopalnia/sztabkamiedz.png")) {
+                sf::Sprite sprite(obraz9);
+                sprite.setPosition(position,720); 
+                sprite.setScale(0.25f, 0.25f);
+                window.draw(sprite);
+                displayedValues++;
+            }
+        }
+        else if (ReadSigns[i]== 'R') {//srebro
+
+            if (obraz9.loadFromFile("kopalnia/sztabkasrebro.png")) {
+                sf::Sprite sprite(obraz9);
+                sprite.setPosition(position,720); 
+                sprite.setScale(0.25f, 0.25f);
+                window.draw(sprite);
+                displayedValues++;
+            }
+        }
+        else if (ReadSigns[i] == 'L') {//zloto
+
+            if (obraz9.loadFromFile("kopalnia/sztabkazloto.png")) {
+                sf::Sprite sprite(obraz9);
+                sprite.setPosition(position,720); 
+                sprite.setScale(0.25f, 0.25f);
+                window.draw(sprite);
+                displayedValues++;
+            }
+        }
+        else if (ReadSigns[i] == 'D') {//diament
+
+            if (obraz9.loadFromFile("kopalnia/diament.png")) {
+                sf::Sprite sprite(obraz9);
+                sprite.setPosition(position-10,720); 
+                sprite.setScale(0.25f, 0.25f);
+                window.draw(sprite);
+                displayedValues++;
+            }
+        }
+        else if (ReadSigns[i] == 'W') {
+
+            if (obraz9.loadFromFile("hodowlazdj/jajkoswinka.png")) {
+                sf::Sprite sprite(obraz9);
+                sprite.setPosition(position,690); 
+                sprite.setScale(0.3f, 0.3f);
+                window.draw(sprite);
+            }
+        }
+        else if (ReadSigns[i] == 'K') {
+
+            if (obraz9.loadFromFile("hodowlazdj/jajkokrowka.png")) {
+                sf::Sprite sprite(obraz9);
+                sprite.setPosition(position,690); 
+                sprite.setScale(0.3f, 0.3f);
+                window.draw(sprite);
+            }
+        }
+        else if (ReadSigns[i] == 'U') {
+
+            if (obraz9.loadFromFile("hodowlazdj/jajkokura.png")) {
+                sf::Sprite sprite(obraz9);
+                sprite.setPosition(position,690); 
+                sprite.setScale(0.3f, 0.3f);
+                window.draw(sprite);
+            }
         }
         position += interval;
     }
             xPos = 220;
-        for (int i = 0; i < Readvalues.size(); ++i) {
+        for (int i = 0; i < numIterations; ++i) {
             if (displayedVal  >= 4) {
-            break; // Przerwij pętlę po wyświetleniu 3 wartości
+            break;
         }
         xPos += 140;
          if (Readvalues[i] != 0) { 
@@ -592,6 +663,7 @@ int displayedVal = 0;
 void Orchard::run() {
 
     renderTopasek();
+     openall = new Openall(window, ReadSigns, Readvalues);
     loadPlantingInfo();
     loadPositions();
     loadTimes();
@@ -635,6 +707,14 @@ void Orchard::handleEvents() {
 
                 window.close();
             } 
+        else if (event.type == sf::Event::MouseButtonPressed) {
+        if(openwerehouse){
+
+        openall->handleMouseEvent(event);
+            ReadSigns = openall->getCharValues();
+           Readvalues = openall->getIntValues();
+        }
+             }
         else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
             sf::Vector2f mousePos = window.mapPixelToCoords(mousePosition);
@@ -642,6 +722,13 @@ void Orchard::handleEvents() {
             if (exit.isHoveredButton()) {
                 switchTofarm();
             }
+                        else if(znakzapytania.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))){
+                pomocotwarta = true;
+                
+            }  
+            else if(wyjscietablica.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))){
+                    pomocotwarta = false;
+                } 
         else if(added <3){
              if  (sprite4.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) && zasadzonepszenica) {
                 for(int i = 0; i <ReadSigns.size() ; i++){
@@ -904,7 +991,27 @@ void Orchard::savepositionAdditional(){
         std::cerr << "Unable to open planting info file!" << std::endl;
     }
 }
-
+void Orchard::addhelp(){
+    if (!zapytaniezdj.loadFromFile("znakzapytania/zapytanie2.png")) {
+    std::cerr << "Błąd podczas wczytywania tła." << std::endl;
+    }
+    znakzapytania.setTexture(zapytaniezdj);
+    znakzapytania.setPosition(1080.0f, 660.0f);
+    znakzapytania.setScale(0.2f, 0.2f);
+}
+void Orchard::znakpomocy(){
+    if (!tablicapomoczdj.loadFromFile("znakzapytania/sadtablica.png")) {
+    std::cerr << "Błąd podczas wczytywania tła." << std::endl;
+    }
+    tablicapomoc.setTexture(tablicapomoczdj);
+    tablicapomoc.setPosition(50.0f, 0.0f);
+    tablicapomoc.setScale(0.9f, 0.9f);
+    wyjscietablica.setTexture(exittextur);
+    wyjscietablica.setPosition(900.0f, 100.0f);
+    wyjscietablica.setScale(0.3f, 0.3f);
+    window.draw(tablicapomoc);
+    window.draw(wyjscietablica);
+}
 void Orchard::render()
 {
         window.clear();
@@ -925,16 +1032,26 @@ changeImage();
         window.draw(dokopiec);
         window.draw(dokopiec2);
         window.draw(dokopiec3);
-std::cout<<added<<std::endl;
+
         addstorage();
-addToPasek();
-        if(openwerehouse){
-         Openall openall(window,ReadSigns,Readvalues);
-    openall.drawtank();
-    openall.addsToPasek();
+
+        if (!openwerehouse) {
+        addToPasek();
+    } else {
+
+            openall->drawtank();
+        openall->addsToPasek();
+        
+    }
+        addhelp();
+    if(pomocotwarta){
+    znakpomocy();
         }
+    window.draw(znakzapytania);
         window.display();
 }
+
+
 void Orchard::switchplace(){
             std::ofstream wypiszFile("wypisz_values.txt");
     if (wypiszFile.is_open()) {
@@ -961,4 +1078,8 @@ switchplace();
     Game game(window);
     game.run();
     
+}
+
+Orchard::~Orchard() {
+    delete openall;
 }

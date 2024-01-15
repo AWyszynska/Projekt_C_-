@@ -6,17 +6,20 @@
 #include "orchard.h"
 #include "cave.h"
 #include "hodowla.h"
+#include "openall.h"
 #include <vector> 
 #include <fstream>
+#include "mousehoverdisplay.h"
 
 class Game {
 public:
     Game(sf::RenderWindow& window);
 
     void run();
-
+~Game();
 private:
  sf::RenderWindow& window;
+ MouseHoverDisplay hoverDisplay;
     Guzik ogrod;
     Guzik sad; 
     Guzik kopalnia;   
@@ -47,7 +50,7 @@ sf::Sprite strawberrytoline;
     sf::Texture cavephoto;
     sf::Texture animalphoto;
     sf::Texture shopphoto;
-
+Openall* openall;
     sf::Texture obraz1;
     sf::Texture obraz2;
     sf::Texture obraz3;
@@ -57,14 +60,16 @@ sf::Sprite strawberrytoline;
     sf::Texture obraz7;
     sf::Texture obraz8;
     sf::Texture obraz9;
-
+    sf::Texture pointsphoto;
+    sf::Sprite points;
 sf::Text text;
  std::vector<char> ReadSigns;
   char Signs;
    std::vector<int> Readvalues;
   int valuess;
     int xPos;
-
+    bool openwerehouse = false;
+    bool sorrywiondowisopen = true;
 
 
     void switchToGarden();
@@ -77,5 +82,6 @@ sf::Text text;
     void render();
     void renderTopasek();
     void addToPasek();
+    void addstorage();
 };
 

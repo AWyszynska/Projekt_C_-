@@ -5,11 +5,12 @@
 #include <thread>
 #include "gra.h"
 #include "guzik.h"
+#include "openall.h"
 #include <fstream>
 #include <map>
 #include <ctime>
 #include <sstream>
-#include "openall.h"
+
 
 class Garden {
 
@@ -21,7 +22,7 @@ public:
     void handleSadzonkaInteraction();
     void changeImage();
     void run();
-
+~Garden();
 private:
 
 struct DisplayedImage {
@@ -85,7 +86,7 @@ sf::Clock myClock;
 bool zasadzonepszenica = true;
 bool zasadzonemarchew = true;
 bool zasadzonetruskawka = true;
-
+Openall* openall;
 sf::Texture carrottolinephoto;
 sf::Texture strawberrytolinephoto;
 sf::Sprite carrottoline;
@@ -139,7 +140,12 @@ sf::Sprite strawberrytoline;
     tm* czas_info;
 
     std::vector<sf::Sprite> pszenicaSprites;
-
+   bool pomocotwarta = false;
+    sf::Texture zapytaniezdj;
+    sf::Sprite znakzapytania;
+    sf::Texture tablicapomoczdj;
+    sf::Sprite tablicapomoc;
+    sf::Sprite wyjscietablica;
     void handleEvents();
     void render();
     void kopcephoto();
@@ -158,5 +164,7 @@ sf::Sprite strawberrytoline;
     void bleeaddtoline();
     void switchplace();
     bool addedblee = false;
+    void addhelp();
+    void znakpomocy();
 
 };

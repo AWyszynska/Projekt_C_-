@@ -11,27 +11,28 @@
 #include <sstream>
 #include "openall.h"
 #include "timerbar.h"
+#include "mousehoverdisplay.h"
 class Hodowla{
 
 public:
     Hodowla(sf::RenderWindow& window); 
 
     void run();
-
+~Hodowla();
 private:
 float czasswinia;
 float czaskrowa;
 float czaskura;
-TimerBar timerBar;
-TimerBar timerBarkrowa;
-TimerBar timerBarkura;
+TimerBar* timerBar;
+TimerBar* timerBarkrowa;
+TimerBar* timerBarkura;
     Guzik exit;
     sf::Texture exittextur;
     sf::RenderWindow& window;
     sf::Sprite background;
     sf::Texture backgroundTexture;
 
-
+Openall* openall;
     sf::Texture pasek_zdj;
     sf::Sprite pasek;
     sf::Texture obraz1;
@@ -50,6 +51,12 @@ TimerBar timerBarkura;
     sf::Sprite skrzynka;
     sf::Texture plotzdj;
     sf::Sprite plot;
+    bool pomocotwarta = false;
+    sf::Texture zapytaniezdj;
+    sf::Sprite znakzapytania;
+    sf::Texture tablicapomoczdj;
+    sf::Sprite tablicapomoc;
+    sf::Sprite wyjscietablica;
 
     sf::Texture krowazdj;
     sf::Sprite krowa;
@@ -98,10 +105,22 @@ std::chrono::duration<double> difference = std::chrono::duration<double>::zero()
 sf::Texture swiniaEndTexture;
 sf::Texture krowaEndTexture;
 sf::Texture kuraEndTexture;
+float remainingTimeSwinia;
+float remainingTimeKrowa;
+float remainingTimeKura;
+    sf::Texture zdjklodka;
+    sf::Sprite klodkaswinia;
+    sf::Sprite klodkakrowa;
+    sf::Sprite klodkakura;
+
+bool swinkazyje;
+bool krowkazyje;
+bool kurkazyje;
 
     sf::Vector2f initialPositionKrowa;
     sf::Vector2f initialPositionSwinia;
 sf::Vector2f initialPositionKura;
+void znakpomocy();
     void switchTofarm();
     void handleEvents();
     void render();
@@ -120,4 +139,7 @@ sf::Vector2f initialPositionKura;
     void savetimeall();
     void saveTimeToFile();
     void loadTimeFromFile();
+    void addhelp();
+    void addpadlock();
+    void zyjeczynie();
 };

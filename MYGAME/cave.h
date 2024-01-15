@@ -11,22 +11,23 @@
 #include <sstream>
 #include "openall.h"
 #include <random>
-
+#include "mousehoverdisplay.h"
 class Cave{
 
 public:
     Cave(sf::RenderWindow& window); 
 
     void run();
-
+~Cave();
 private:
+
 
     Guzik exit;
     sf::Texture exittextur;
     sf::RenderWindow& window;
     sf::Sprite background;
     sf::Texture backgroundTexture;
-
+Openall* openall;
     sf::Texture pasek_zdj;
     sf::Sprite pasek;
     sf::Texture obraz1;
@@ -66,7 +67,12 @@ bool genereTopasek = false;
     float randomScale;
     float scaleFactorX;
  int scaleSteps;
-
+    bool pomocotwarta = false;
+    sf::Texture zapytaniezdj;
+    sf::Sprite znakzapytania;
+    sf::Texture tablicapomoczdj;
+    sf::Sprite tablicapomoc;
+    sf::Sprite wyjscietablica;
  float randomPercent;
 int licznik = 0;
 std::vector<std::string> imagePaths;
@@ -97,4 +103,6 @@ bool isHoldingSkala = false;
     void renderskala();
     void losowacskala();
     void genere_to_pasek();
+    void addhelp();
+    void znakpomocy();
 };

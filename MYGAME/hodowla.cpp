@@ -1,4 +1,3 @@
-
 #include "hodowla.h" 
 
 
@@ -9,9 +8,11 @@ zlotowkiFile("zlotowki_value.txt"),speedMultiplier(0.01f),
       czasswinia(20.0f),
       czaskrowa(60.0f),
       czaskura(80.0f),
-timerBar(czasswinia, 200.0f, 20.0f, sf::Color::Green),
-timerBarkrowa(czaskrowa, 200.0f, 20.0f, sf::Color::Green),
-timerBarkura(czaskura, 200.0f, 20.0f, sf::Color::Green) {
+timerBar(nullptr),
+timerBarkrowa(nullptr),
+timerBarkura(nullptr),
+openall(nullptr) 
+{
 
      if (!font.loadFromFile("Flottflott.ttf")) {
             std::cout << "Error loading font file!" << std::endl;
@@ -60,9 +61,7 @@ if (!backgroundTexture.loadFromFile("hodowlazdj/hodowla1.png")) {
     plot.setScale(1.0f, 1.0f);
 size = sf::Vector2f(0.15f, 0.15f);
 targetSize = size;
-    timerBar.setPosition(100.0f, 390.0f);
-    timerBarkrowa.setPosition(500.0f, 390.0f);
-    timerBarkura.setPosition(900.0f, 390.0f);
+
     initialPositionKrowa = sf::Vector2f(370.f, 400.f);
     initialPositionSwinia = sf::Vector2f(0.f, 420.f); 
     initialPositionKura = sf::Vector2f(440.f, 700.f); 
@@ -76,8 +75,26 @@ targetSize = size;
     std::cerr << "Błąd podczas wczytywania tła." << std::endl;
     }
 
-}
 
+
+std::ifstream stateFile("hodowlazdj/animal_states.txt");
+if (stateFile.is_open()) {
+stateFile >> swinkazyje >> krowkazyje >> kurkazyje;
+stateFile.close();
+} else {
+swinkazyje = false;
+krowkazyje = false;
+kurkazyje = false;
+}
+}
+void Hodowla::addhelp(){
+    if (!zapytaniezdj.loadFromFile("znakzapytania/zapytanie2.png")) {
+    std::cerr << "Błąd podczas wczytywania tła." << std::endl;
+    }
+    znakzapytania.setTexture(zapytaniezdj);
+    znakzapytania.setPosition(1080.0f, 660.0f);
+    znakzapytania.setScale(0.2f, 0.2f);
+}
 void Hodowla::renderTopasek(){
     std::ifstream file("wypisz_values.txt");
     if (!file.is_open()) {
@@ -117,11 +134,15 @@ int position = 270;
     int interval = 150;
 int displayedValues = 0;
 int displayedVal = 0;
-    for (char znak : ReadSigns) {
+    //MouseHoverDisplay hoverDisplay(window, ReadSigns,true);
+    //sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+    //hoverDisplay.displayImageOnHover(mousePosition);
+    int numIterations = std::min(static_cast<int>(ReadSigns.size()), 4);
+    for (int i = 0; i < numIterations; i++ ) {
         if (displayedValues >= 4) {
             break; // Przerwij pętlę po wyświetleniu 3 wartości
         }
-        if (znak == 'P') {
+        if (ReadSigns[i] == 'P') {
            
             if (obraz1.loadFromFile("aazdj/nasiono1.png")) {
                 ziarenko.setTexture(obraz1);
@@ -131,7 +152,7 @@ int displayedVal = 0;
                 displayedValues++;
                 
             }
-        } else if (znak == 'M') {
+        } else if (ReadSigns[i] == 'M') {
            
             if (obraz2.loadFromFile("aazdj/nasionamarchewka.png")) {
                 sf::Sprite sprite(obraz2);
@@ -140,7 +161,7 @@ int displayedVal = 0;
                 window.draw(sprite);
                 displayedValues++;
             }
-        } else if (znak == 'T') {
+        } else if (ReadSigns[i] == 'T') {
 
             if (obraz3.loadFromFile("aazdj/nasionatruskawka.png")) {
                 sf::Sprite sprite(obraz3);
@@ -150,7 +171,7 @@ int displayedVal = 0;
                 displayedValues++;
             }
         }
-                else if (znak == 'C') {
+                else if (ReadSigns[i] == 'C') {
 
             if (carrottolinephoto.loadFromFile("aazdj/carrot.png")) {
                 //sf::Sprite sprite3(obraz3);
@@ -163,7 +184,7 @@ int displayedVal = 0;
 
             }
         }
-        else if (znak == 'S') {
+        else if (ReadSigns[i] == 'S') {
 
             if (strawberrytolinephoto.loadFromFile("aazdj/truskawka.png")) {
                 //sf::Sprite sprite3(obraz3);
@@ -176,7 +197,7 @@ int displayedVal = 0;
 
             }
         }
-        else if (znak == 'J') {
+        else if (ReadSigns[i] == 'J') {
 
             if (obraz4.loadFromFile("zdjeciasad/nasionajablka.png")) {
                 sf::Sprite sprite(obraz4);
@@ -186,7 +207,7 @@ int displayedVal = 0;
                 displayedValues++;
             }
         }
-        else if (znak == 'G') {
+        else if (ReadSigns[i] == 'G') {
 
             if (obraz5.loadFromFile("zdjeciasad/nasionagruszki.png")) {
                  sf::Sprite sprite(obraz5);
@@ -196,7 +217,7 @@ int displayedVal = 0;
                 displayedValues++;
             }
         }
-        else if (znak == 'Z') {
+        else if (ReadSigns[i] == 'Z') {
 
             if (obraz6.loadFromFile("zdjeciasad/nasionkosliwa.png")) {
                 sf::Sprite sprite(obraz6);
@@ -206,7 +227,7 @@ int displayedVal = 0;
                 displayedValues++;
             }
         }
-                else if (znak == 'A') {//F
+                else if (ReadSigns[i] == 'A') {//F
 
             if (obraz7.loadFromFile("zdjeciasad/jablkozdjecie.png")) {
                 sf::Sprite sprite(obraz7);
@@ -216,7 +237,7 @@ int displayedVal = 0;
                 displayedValues++;
             }
         }
-        else if (znak == 'E') {//gruszka
+        else if (ReadSigns[i] == 'E') {//gruszka
 
             if (obraz8.loadFromFile("zdjeciasad/gruszkazdjecie.png")) {
                 sf::Sprite sprite(obraz8);
@@ -226,7 +247,7 @@ int displayedVal = 0;
                 displayedValues++;
             }
         }
-        else if (znak == 'F') {//sliwka
+        else if (ReadSigns[i] == 'F') {//sliwka
 
             if (obraz9.loadFromFile("zdjeciasad/sliwkazdjecie.png")) {
                 sf::Sprite sprite(obraz9);
@@ -236,7 +257,7 @@ int displayedVal = 0;
                 displayedValues++;
             }
         }
-        else if (znak == 'I') {//miedz
+        else if (ReadSigns[i] == 'I') {//miedz
 
             if (obraz9.loadFromFile("kopalnia/sztabkamiedz.png")) {
                 sf::Sprite sprite(obraz9);
@@ -246,7 +267,7 @@ int displayedVal = 0;
                 displayedValues++;
             }
         }
-        else if (znak == 'R') {//srebro
+        else if (ReadSigns[i] == 'R') {//srebro
 
             if (obraz9.loadFromFile("kopalnia/sztabkasrebro.png")) {
                 sf::Sprite sprite(obraz9);
@@ -256,7 +277,7 @@ int displayedVal = 0;
                 displayedValues++;
             }
         }
-        else if (znak == 'L') {//zloto
+        else if (ReadSigns[i] == 'L') {//zloto
 
             if (obraz9.loadFromFile("kopalnia/sztabkazloto.png")) {
                 sf::Sprite sprite(obraz9);
@@ -266,7 +287,7 @@ int displayedVal = 0;
                 displayedValues++;
             }
         }
-        else if (znak == 'D') {//diament
+        else if (ReadSigns[i] == 'D') {//diament
 
             if (obraz9.loadFromFile("kopalnia/diament.png")) {
                 sf::Sprite sprite(obraz9);
@@ -276,10 +297,37 @@ int displayedVal = 0;
                 displayedValues++;
             }
         }
+        else if (ReadSigns[i] == 'W') {
+
+            if (obraz9.loadFromFile("hodowlazdj/jajkoswinka.png")) {
+                sf::Sprite sprite(obraz9);
+                sprite.setPosition(position,690); 
+                sprite.setScale(0.3f, 0.3f);
+                window.draw(sprite);
+            }
+        }
+        else if (ReadSigns[i] == 'K') {
+
+            if (obraz9.loadFromFile("hodowlazdj/jajkokrowka.png")) {
+                sf::Sprite sprite(obraz9);
+                sprite.setPosition(position,690); 
+                sprite.setScale(0.3f, 0.3f);
+                window.draw(sprite);
+            }
+        }
+        else if (ReadSigns[i] == 'U') {
+
+            if (obraz9.loadFromFile("hodowlazdj/jajkokura.png")) {
+                sf::Sprite sprite(obraz9);
+                sprite.setPosition(position,690); 
+                sprite.setScale(0.3f, 0.3f);
+                window.draw(sprite);
+            }
+        }
         position += interval;
     }
             xPos = 220;
-        for (int i = 0; i < Readvalues.size(); ++i) {
+        for (int i = 0; i < numIterations; ++i) {
             xPos += 140;
              if (Readvalues[i] != 0) { 
             text.setString(std::to_string(Readvalues[i]));
@@ -375,10 +423,18 @@ void Hodowla::handleEvents() {
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
             savetimeall();
+            zyjeczynie();
             saveTimeToFile();
                 window.close();
             } 
-            
+        else if (event.type == sf::Event::MouseButtonPressed) {
+        if(openwerehouse){
+
+       openall->handleMouseEvent(event);
+            ReadSigns = openall->getCharValues();
+            Readvalues = openall->getIntValues();
+        }
+             }    
         else if (event.type == sf::Event::MouseButtonPressed) {
             if (event.mouseButton.button == sf::Mouse::Left) {
                 //clickPosition = sf::Mouse::getPosition(window);
@@ -395,7 +451,13 @@ void Hodowla::handleEvents() {
             openwerehouse = !openwerehouse;
 
             }
-                   
+            else if(znakzapytania.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))){
+                pomocotwarta = true;
+                
+            }  
+            else if(wyjscietablica.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))){
+                    pomocotwarta = false;
+                }    
 
  if (ziarenko.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
                  if (!ziarenkoClicked) {
@@ -406,9 +468,73 @@ void Hodowla::handleEvents() {
                     ziarenkoClicked = false;
                 }
             }
+
+    else if(klodkaswinia.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) && !swinkazyje){
+        if (std::find(ReadSigns.begin(), ReadSigns.end(), 'W') != ReadSigns.end()) {
+            swinkazyje = true; 
+            timerBar->reset(); 
+            for(int i = 0; i <ReadSigns.size() ; i++){
+                         if(ReadSigns[i] == 'W'){
+                            if( Readvalues[i] > 1){
+                            Readvalues[i] -=1;
+                             
+                            }
+                            else{
+                                Readvalues.erase(Readvalues.begin() + i);
+                                ReadSigns.erase(ReadSigns.begin() + i);
+                            }
+                        }
+            }
+        }
+    }
+        else if(klodkakrowa.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) && !krowkazyje){
+            if (std::find(ReadSigns.begin(), ReadSigns.end(), 'K') != ReadSigns.end()) {
+            krowkazyje = true; 
+            timerBarkrowa->reset(); 
+            for(int i = 0; i <ReadSigns.size() ; i++){
+                                     if(ReadSigns[i] == 'K'){
+                            if( Readvalues[i] > 1){
+                            Readvalues[i] -=1;
+                             
+                            }
+                            else{
+                                Readvalues.erase(Readvalues.begin() + i);
+                                ReadSigns.erase(ReadSigns.begin() + i);
+                            }
+                        }
+            }
+        }
+        }
+        else if(klodkakura.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) && !kurkazyje){
+            if (std::find(ReadSigns.begin(), ReadSigns.end(), 'U') != ReadSigns.end()) {
+            kurkazyje = true; 
+            timerBarkura->reset(); 
+            for(int i = 0; i <ReadSigns.size() ; i++){
+                                                 if(ReadSigns[i] == 'U'){
+                            if( Readvalues[i] > 1){
+                            Readvalues[i] -=1;
+                             
+                            }
+                            else{
+                                Readvalues.erase(Readvalues.begin() + i);
+                                ReadSigns.erase(ReadSigns.begin() + i);
+                            }
+                        }
+            }
+        }
+        }
+            if (swinia.getGlobalBounds().contains(mousePos) && timerBar->isTimeUp()) {
+                swinkazyje = false;
+            }
+            if (krowa.getGlobalBounds().contains(mousePos) && timerBarkrowa->isTimeUp()) {
+                krowkazyje = false;
+            }
+            if (kura.getGlobalBounds().contains(mousePos) && timerBarkura->isTimeUp()) {
+                kurkazyje = false;
+            }
         else if (ziarenkoClicked && krowa.getGlobalBounds().contains(mousePos)) {
  
-                timerBarkrowa.addTime(2.0f); 
+                timerBarkrowa->addTime(2.0f); 
                 for(int i = 0; i <ReadSigns.size() ; i++){
                          if(ReadSigns[i] == 'P'){
                             if( Readvalues[i] > 1){
@@ -424,7 +550,7 @@ void Hodowla::handleEvents() {
                 }
             }
       else if(ziarenkoClicked && swinia.getGlobalBounds().contains(mousePos)){
-                timerBar.addTime(2.0f);  
+                timerBar->addTime(2.0f);  
 for(int i = 0; i <ReadSigns.size() ; i++){
                          if(ReadSigns[i] == 'P'){
                             if( Readvalues[i] > 1){
@@ -440,7 +566,7 @@ for(int i = 0; i <ReadSigns.size() ; i++){
                 }
       }
       else if(ziarenkoClicked && kura.getGlobalBounds().contains(mousePos)){
-                   timerBarkura.addTime(2.0f); 
+                   timerBarkura->addTime(2.0f); 
 for(int i = 0; i <ReadSigns.size() ; i++){
                          if(ReadSigns[i] == 'P'){
                             if( Readvalues[i] > 1){
@@ -460,7 +586,7 @@ for(int i = 0; i <ReadSigns.size() ; i++){
 }
 
 void Hodowla::updateCowMovementKrowa() {
-    if (isKrowaAlive) {
+    if (isKrowaAlive && krowkazyje) {
     static sf::Clock movementClock; 
     static sf::Clock stopClock; 
     static bool isMoving = true; 
@@ -472,19 +598,19 @@ void Hodowla::updateCowMovementKrowa() {
     static const float stopTime = 2.5f; 
 
     if (isMoving) {
-        // Krowa się porusza
+
         sf::Vector2f velocity(vx, vy);
         krowa.move(velocity);
 
         if (movementClock.getElapsedTime().asSeconds() >= moveTime) {
             isMoving = false;
             isStopped = true;
-            vx = -vx; // Zmiana kierunku na przeciwny
+            vx = -vx; 
             movementClock.restart();
             stopClock.restart();
         }
     } else if (isStopped) {
-        // Krowa zatrzymuje się
+
         if (stopClock.getElapsedTime().asSeconds() >= stopTime) {
             isStopped = false;
             isMoving = true;
@@ -492,7 +618,6 @@ void Hodowla::updateCowMovementKrowa() {
         }
     }
 
-    // Ustawianie tekstury w zależności od kierunku ruchu
     if (vx < 0) {
         if (!krowazdj.loadFromFile("hodowlazdj/krowa4.png")) {
             std::cerr << "Błąd podczas wczytywania." << std::endl;
@@ -510,7 +635,7 @@ void Hodowla::updateCowMovementKrowa() {
 
 
 void Hodowla::updateCowMovementKura() {
-    if (isKuraAlive) {
+    if (isKuraAlive && kurkazyje) {
 static sf::Clock movementClockx; 
     static sf::Clock stopClock; 
     static bool isMoving = true; 
@@ -522,19 +647,19 @@ static sf::Clock movementClockx;
     static const float stopTime = 2.f; 
 
     if (isMoving) {
-        // Krowa się porusza
+
         sf::Vector2f velocity(vx, vy);
         kura.move(velocity);
 
         if (movementClockx.getElapsedTime().asSeconds() >= moveTime) {
             isMoving = false;
             isStopped = true;
-            vx = -vx; // Zmiana kierunku na przeciwny
+            vx = -vx; 
             movementClockx.restart();
             stopClock.restart();
         }
     } else if (isStopped) {
-        // Krowa zatrzymuje się
+
         if (stopClock.getElapsedTime().asSeconds() >= stopTime) {
             isStopped = false;
             isMoving = true;
@@ -542,7 +667,7 @@ static sf::Clock movementClockx;
         }
     }
 
-    // Ustawianie tekstury w zależności od kierunku ruchu
+
     if (vx < 0) {
         if (!kurazdj.loadFromFile("hodowlazdj/kura1.png")) {
             std::cerr << "Błąd podczas wczytywania." << std::endl;
@@ -585,7 +710,7 @@ void Hodowla::loadAnimalPositions() {
         file.close();
     } else {
         std::cerr << "Nie można otworzyć pliku do wczytania pozycji zwierząt." << std::endl;
-        // Ustaw domyślne pozycje, jeśli plik nie istnieje
+
         krowa.setPosition(initialPositionKrowa);
         swinia.setPosition(initialPositionSwinia);
         kura.setPosition(initialPositionKura);
@@ -596,7 +721,7 @@ void Hodowla::loadAnimalPositions() {
 
 
 void Hodowla::updateCowMovementSwinia() {
-    if (isSwiniaAlive) {
+    if (isSwiniaAlive && swinkazyje) {
     static sf::Clock movementClocks; 
     static sf::Clock stopClock; 
                 static float vx = 1;
@@ -608,19 +733,19 @@ void Hodowla::updateCowMovementSwinia() {
     static const float stopTime = 3.f; 
 
     if (isMoving) {
-        // Krowa się porusza
+      
         sf::Vector2f velocity(vx, vy);
         swinia.move(velocity);
 
         if (movementClocks.getElapsedTime().asSeconds() >= moveTime) {
             isMoving = false;
             isStopped = true;
-            vx = -vx; // Zmiana kierunku na przeciwny
+            vx = -vx; 
             movementClocks.restart();
             stopClock.restart();
         }
     } else if (isStopped) {
-        // Krowa zatrzymuje się
+       
         if (stopClock.getElapsedTime().asSeconds() >= stopTime) {
             isStopped = false;
             isMoving = true;
@@ -644,31 +769,39 @@ void Hodowla::updateCowMovementSwinia() {
 
 void Hodowla::deadanimals()
 {
-    if (timerBar.isTimeUp()) {
+    if (timerBar->isTimeUp()) {
         swinia.setTexture(swiniaEndTexture);
         isSwiniaAlive = false;
         swinia.setPosition(50.f,500.f);
-         // Zmiana tekstury jeśli czas minął
+        
     }
 
-    if (timerBarkrowa.isTimeUp()) {
+    if (timerBarkrowa->isTimeUp()) {
         krowa.setTexture(krowaEndTexture);
         isKrowaAlive = false; 
-        krowa.setPosition(460.f,500.f);// Podobnie dla krowy
+        krowa.setPosition(460.f,500.f);
     }
 
-    if (timerBarkura.isTimeUp()) {
+    if (timerBarkura->isTimeUp()) {
         kura.setTexture(kuraEndTexture);
         isKuraAlive = false;
-        kura.setPosition(890.f,500.f); // I dla kury
+        kura.setPosition(890.f,500.f); 
     }
 
 }
 void Hodowla::run()
 {
     loadTimeFromFile();
+    timerBar = new TimerBar(czasswinia,(czasswinia/20)*200.0,20.0f, sf::Color::Green);
+    
+timerBarkrowa = new TimerBar(czaskrowa,(czaskrowa/60)*200.0,20.0f, sf::Color::Green);
+timerBarkura = new TimerBar(czaskura,(czaskura/80)*200.0,20.0f, sf::Color::Green);
+    timerBar->setPosition(100.0f, 390.0f);
+    timerBarkrowa->setPosition(500.0f, 390.0f);
+    timerBarkura->setPosition(900.0f, 390.0f);
     loadAnimalPositions();
 renderTopasek();
+openall = new Openall(window, ReadSigns, Readvalues);
     while (window.isOpen()) {
                 czas = time(nullptr);
         czas_info = localtime(&czas);
@@ -676,7 +809,7 @@ renderTopasek();
         render();
 
     }
-    //saveAnimalPositions();
+
 }
 
 void Hodowla::switchplace(){
@@ -695,6 +828,43 @@ void Hodowla::switchplace(){
         letterFile.close();
     }
 }
+void Hodowla::znakpomocy(){
+    if (!tablicapomoczdj.loadFromFile("znakzapytania/hodowlatablica.png")) {
+    std::cerr << "Błąd podczas wczytywania tła." << std::endl;
+    }
+    tablicapomoc.setTexture(tablicapomoczdj);
+    tablicapomoc.setPosition(50.0f, 0.0f);
+    tablicapomoc.setScale(0.9f, 0.9f);
+    wyjscietablica.setTexture(exittextur);
+    wyjscietablica.setPosition(900.0f, 100.0f);
+    wyjscietablica.setScale(0.3f, 0.3f);
+    window.draw(tablicapomoc);
+    window.draw(wyjscietablica);
+}
+
+void Hodowla::addpadlock(){
+    if (!zdjklodka.loadFromFile("hodowlazdj/klodka.png")) {
+    std::cerr << "Błąd podczas wczytywania tła." << std::endl;
+    }
+    if(!swinkazyje){
+    klodkaswinia.setTexture(zdjklodka);
+    klodkaswinia.setPosition(100.0f, 400.0f);
+    klodkaswinia.setScale(0.3f, 0.3f);
+    window.draw(klodkaswinia);
+    }
+    if(!krowkazyje){
+    klodkakrowa.setTexture(zdjklodka);
+    klodkakrowa.setPosition(500.0f, 400.0f);
+    klodkakrowa.setScale(0.3f, 0.3f);
+    window.draw(klodkakrowa);
+    }
+    if(!kurkazyje){
+    klodkakura.setTexture(zdjklodka);
+    klodkakura.setPosition(900.0f, 400.0f);
+    klodkakura.setScale(0.3f, 0.3f);
+    window.draw(klodkakura);
+    }
+}
 
 void Hodowla::render()
 {
@@ -704,14 +874,10 @@ void Hodowla::render()
         exit.draw();
         window.draw(pasek);
         window.draw(skrzynka);
-        addToPasek();
-        if(openwerehouse){
-         Openall openall(window,ReadSigns,Readvalues);
-         openall.drawtank();
-        openall.addsToPasek();
-        }
 
-        addstorage();
+
+
+
 if (ziarenko.getScale() != targetSize) {
         ziarenko.setScale(targetSize);
     }
@@ -724,19 +890,40 @@ if (ziarenko.getScale() != targetSize) {
               updateCowMovementSwinia();
               updateCowMovementKura();
               deadanimals();
+              if(krowkazyje){
                 window.draw(krowa);
+              }
+                if(swinkazyje){
                 window.draw(swinia);
+                }
+                if(kurkazyje){
                 window.draw(kura);
-                
+                }
+                addhelp();
+
+                if(pomocotwarta){
+                znakpomocy();
+                }
+                window.draw(znakzapytania);
+addpadlock();
+
 //std::cout<<Readvalues[0]<<std::endl;
-timerBar.update();
-    timerBar.draw(window);
-    timerBarkrowa.update();
-    timerBarkrowa.draw(window);
-    timerBarkura.update();
-    timerBarkura.draw(window);
+timerBar->update();
+    timerBar->draw(window);
+    timerBarkrowa->update();
+    timerBarkrowa->draw(window);
+    timerBarkura->update();
+    timerBarkura->draw(window);
 
+        addstorage();
+                    if (!openwerehouse) {
+        addToPasek();
+    } else {
 
+           openall->drawtank();
+            openall->addsToPasek();
+        
+    }
         window.display();
 }
 
@@ -753,23 +940,43 @@ void Hodowla::savetimeall() {
         std::cerr << "Unable to open the file to save time!" << std::endl;
     }
 }
+void Hodowla::zyjeczynie(){
+    std::ofstream stateFile("hodowlazdj/animal_states.txt");
+    if (stateFile.is_open()) {
+        stateFile << swinkazyje << " " << krowkazyje << " " << kurkazyje << std::endl;
+        stateFile.close();
+    } else {
+        std::cerr << "Unable to open the file to save states!" << std::endl;
+    }
 
+}
 void Hodowla::saveTimeToFile() {
     std::ofstream file("hodowlazdj/czaszycia.txt");
     if (!file.is_open()) {
         std::cerr << "Nie można otworzyć pliku do zapisu czasu." << std::endl;
         return;
     }
-
-    float remainingTimeSwinia = timerBar.getRemainingTime();
-    float remainingTimeKrowa = timerBarkrowa.getRemainingTime();
-    float remainingTimeKura = timerBarkura.getRemainingTime();
-
+if(swinkazyje){
+    remainingTimeSwinia = timerBar->getRemainingTime();
+}else{
+    remainingTimeSwinia = 20.0;
+}
+if(krowkazyje){
+    remainingTimeKrowa = timerBarkrowa->getRemainingTime();
+}else{
+    remainingTimeKrowa = 60.0;
+}
+if(kurkazyje){
+    remainingTimeKura = timerBarkura->getRemainingTime();
+}
+else{
+   remainingTimeKura = 80.0 ;
+}
     file << remainingTimeSwinia << " " << remainingTimeKrowa << " " << remainingTimeKura;
     file.close();
 }
 void Hodowla::loadTimeFromFile() {
-    std::ifstream file("saved_time.txt");
+    std::ifstream file("hodowlazdj/czaszycia.txt");
     if (!file.is_open()) {
         std::cerr << "Nie można otworzyć pliku do odczytu czasu." << std::endl;
         czasswinia = 20.0f;
@@ -785,7 +992,14 @@ void Hodowla::switchTofarm() {
     savetimeall();
     switchplace();
     saveTimeToFile();
+    zyjeczynie();
     Game game(window);
     game.run();
     
+}
+Hodowla::~Hodowla() {
+    delete openall;
+    delete timerBar;
+    delete timerBarkrowa;
+    delete timerBarkura;
 }

@@ -8,10 +8,7 @@ TimerBar::TimerBar(float totalTime, float width, float height, const sf::Color& 
 
 void TimerBar::update() {
     float elapsedTime = clock.getElapsedTime().asSeconds();
-    float remainingTime = totalTime - elapsedTime;
-    if (remainingTime < 0) {
-        remainingTime = 0;
-    }
+    float remainingTime = std::max(totalTime - elapsedTime, 0.0f);
     float newWidth = (remainingTime / totalTime) * width;
     bar.setSize(sf::Vector2f(newWidth, height));
 }
@@ -39,6 +36,16 @@ void TimerBar::addTime(float additionalTime) {
     if (totalTime - elapsedTime < 0) {
         totalTime = elapsedTime; 
     }
+}
+
+void TimerBar::setRemainingTime(float time) {
+    remainingTime = time; 
+}
+
+float TimerBar::getRemainingTime() const {
+    float elapsedTime = clock.getElapsedTime().asSeconds();
+    float remainingTime = totalTime - elapsedTime;
+    return remainingTime > 0 ? remainingTime : 0;
 }
 
 void TimerBar::reset() {
