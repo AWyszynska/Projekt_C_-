@@ -1,147 +1,92 @@
 #include "mousehoverdisplay.h"
 #include <iostream>
 
-MouseHoverDisplay::MouseHoverDisplay(sf::RenderWindow& window, const std::vector<char>& signs, bool limitedDisplay)
-    : window(window), signs(signs), limitedDisplay(limitedDisplay)  {
+MouseHoverDisplay::MouseHoverDisplay(sf::RenderWindow &window, const std::vector<char> &signs, bool limitedDisplay)
+    : window(window), signs(signs), limitedDisplay(limitedDisplay)
+{
     loadImages();
 }
 
-void MouseHoverDisplay::loadImages() {
-    sf::Texture texture;
-        if (!texture.loadFromFile("tablicazdj/przenicatablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['P'] = texture;
-    }
-        if (!texture.loadFromFile("tablicazdj/marchewkanasionotablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['M'] = texture;
-    }
-    if (!texture.loadFromFile("tablicazdj/truskawkanasiono_tablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['T'] = texture;
-    }
-        if (!texture.loadFromFile("tablicazdj/marchewka_tablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['C'] = texture;
-    }
-        if (!texture.loadFromFile("tablicazdj/truskawka_tablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['S'] = texture;
-    }
-            if (!texture.loadFromFile("tablicazdj/jablkonasiono_tablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['J'] = texture;
-    }
-            if (!texture.loadFromFile("tablicazdj/gruszkanasiono_tablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['G'] = texture;
-    }
-            if (!texture.loadFromFile("tablicazdj/sliwkanasiono_tablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['Z'] = texture;
-    }
-                if (!texture.loadFromFile("tablicazdj/jablko_tablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['A'] = texture;
-    }
-                if (!texture.loadFromFile("tablicazdj/gruszka_tablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['E'] = texture;
-    }
-    if (!texture.loadFromFile("tablicazdj/sliwka_tablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['F'] = texture;
-    }
-    if (!texture.loadFromFile("tablicazdj/sztabka_miedzi_tablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['I'] = texture;
-    }
-    if (!texture.loadFromFile("tablicazdj/sztabka_srebra_tablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['R'] = texture;
-    }
-     if (!texture.loadFromFile("tablicazdj/sztabka_zlota_tablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['L'] = texture;
-    }
-    if (!texture.loadFromFile("tablicazdj/diament_tablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['D'] = texture;
-    }
-        if (!texture.loadFromFile("tablicazdj/jajko_swini_tablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['W'] = texture;
-    }
-        if (!texture.loadFromFile("tablicazdj/jajko_krowy_tablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['K'] = texture;
-    }
-        if (!texture.loadFromFile("tablicazdj/jajko_kury_tablica.png")) {
-        std::cerr << "Błąd ładowania obrazu" << std::endl;
-    } else {
-        images['U'] = texture;
-    }
-}
+void MouseHoverDisplay::loadImages()
+{
+    std::unordered_map<char, std::string> imagePaths = {
+        {'P', "tablicazdj/przenicatablica.png"},
+        {'M', "tablicazdj/marchewkanasionotablica.png"},
+        {'T', "tablicazdj/truskawkanasiono_tablica.png"},
+        {'C', "tablicazdj/marchewka_tablica.png"},
+        {'S', "tablicazdj/truskawka_tablica.png"},
+        {'J', "tablicazdj/jablkonasiono_tablica.png"},
+        {'G', "tablicazdj/gruszkanasiono_tablica.png"},
+        {'Z', "tablicazdj/sliwkanasiono_tablica.png"},
+        {'A', "tablicazdj/jablko_tablica.png"},
+        {'E',"tablicazdj/gruszka_tablica.png"},
+        {'F', "tablicazdj/sliwka_tablica.png"},
+        {'I', "tablicazdj/sztabka_miedzi_tablica.png"},
+        {'R', "tablicazdj/sztabka_srebra_tablica.png"},
+        {'L', "tablicazdj/sztabka_zlota_tablica.png"},
+        {'D', "tablicazdj/diament_tablica.png"},
+        {'W', "tablicazdj/jajko_swini_tablica.png"},
+        {'K', "tablicazdj/jajko_krowy_tablica.png"},
+        {'U', "tablicazdj/jajko_kury_tablica.png"},
+    };
 
-void MouseHoverDisplay::displayImageOnHover(const sf::Vector2i& mousePosition) {
-    int position = 270;
-    const int interval = 150;
-    const int maxXCoordinate = 800;
-    const int minYCoordinate = 600; 
-
-    sf::Texture* selectedTexture = nullptr;
-    sf::Vector2f selectedPosition;
-
-    int numIterations = limitedDisplay ? std::min(static_cast<int>(signs.size()), 4) : signs.size();
-    for (int i = 0; i < numIterations; ++i) {
-        if (images.find(signs[i]) != images.end()) {
-            sf::Sprite sprite(images[signs[i]]);
-            sprite.setPosition(position, 700);
-
-            if (sprite.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) {
-                selectedTexture = &images[signs[i]];
-                selectedPosition = sprite.getPosition();
-            }
-
-            position += interval;
+    for (const auto &pair : imagePaths) {
+        sf::Texture texture;
+        if (!texture.loadFromFile(pair.second)) {
+            std::cerr << "Błąd ładowania obrazu: " << pair.second << std::endl;
+        } else {
+            images[pair.first] = texture;
         }
     }
+}
 
-    if (selectedTexture && mousePosition.x <= maxXCoordinate && mousePosition.y >= minYCoordinate) {
-        displayLargeImage(selectedPosition, *selectedTexture);
-    } else {
-        hideLargeImage();
+void MouseHoverDisplay::displayImageOnHover(const sf::Vector2i &mousePosition)
+{
+    bool spriteHovered = false;
+    int positionX = 280; 
+    const int positionY = 700; 
+    const int spriteWidth = 100; 
+
+    for (const auto &sign : signs)
+    {
+        if (images.find(sign) != images.end())
+        {
+            sf::Sprite sprite(images.at(sign));
+            sprite.setPosition(positionX, positionY); 
+            sprite.setScale(0.5f, 0.5f);
+            sf::FloatRect spriteBounds(positionX, positionY, spriteWidth, sprite.getGlobalBounds().height);
+            if (spriteBounds.contains(static_cast<sf::Vector2f>(mousePosition)))
+            {
+                displayLargeImage(sprite.getPosition(), images.at(sign));
+                spriteHovered = true;
+                break;
+
+            }
+
+            positionX += spriteWidth + 50;
+        }
+            
     }
+
+    if (!spriteHovered)
+    {
+        hideLargeImage(); 
+    }
+
 }
 
 
 
-
-
-void MouseHoverDisplay::displayLargeImage(const sf::Vector2f& position, const sf::Texture& texture) {
+void MouseHoverDisplay::displayLargeImage(const sf::Vector2f &position, const sf::Texture &texture)
+{
     largeSprite.setTexture(texture);
-    largeSprite.setPosition(position.x +50, position.y );
+    largeSprite.setPosition(position.x + 90, position.y - 90);
     largeSprite.setScale(0.2f, 0.2f);
     window.draw(largeSprite);
+    
 }
-void MouseHoverDisplay::hideLargeImage() {
+void MouseHoverDisplay::hideLargeImage()
+{
 
     largeSprite.setTexture(sf::Texture());
 }

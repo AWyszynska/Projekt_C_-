@@ -12,27 +12,29 @@
 #include "openall.h"
 #include "timerbar.h"
 #include "mousehoverdisplay.h"
-class Hodowla{
+class Hodowla
+{
 
 public:
-    Hodowla(sf::RenderWindow& window); 
+    Hodowla(sf::RenderWindow &window);
 
     void run();
-~Hodowla();
+    ~Hodowla();
+
 private:
-float czasswinia;
-float czaskrowa;
-float czaskura;
-TimerBar* timerBar;
-TimerBar* timerBarkrowa;
-TimerBar* timerBarkura;
+    float czasswinia;
+    float czaskrowa;
+    float czaskura;
+    TimerBar *timerBar;
+    TimerBar *timerBarkrowa;
+    TimerBar *timerBarkura;
     Guzik exit;
     sf::Texture exittextur;
-    sf::RenderWindow& window;
+    sf::RenderWindow &window;
     sf::Sprite background;
     sf::Texture backgroundTexture;
 
-Openall* openall;
+    Openall *openall;
     sf::Texture pasek_zdj;
     sf::Sprite pasek;
     sf::Texture obraz1;
@@ -62,20 +64,20 @@ Openall* openall;
     sf::Sprite krowa;
     sf::Texture kurazdj;
     sf::Sprite kura;
-sf::Vector2f size;
-sf::Vector2f targetSize;
+    sf::Vector2f size;
+    sf::Vector2f targetSize;
     sf::Texture swiniazdj;
     sf::Sprite swinia;
-    sf::Sprite ziarenko;  
+    sf::Sprite ziarenko;
     sf::Texture carrottolinephoto;
     sf::Texture strawberrytolinephoto;
     sf::Sprite carrottoline;
-    sf::Sprite strawberrytoline;    
+    sf::Sprite strawberrytoline;
     std::vector<char> ReadSigns;
     int xPos;
     char Signs;
     sf::Text text;
-     bool isKrowaAlive = true;
+    bool isKrowaAlive = true;
     bool isSwiniaAlive = true;
     bool isKuraAlive = true;
     std::vector<int> Readvalues;
@@ -84,43 +86,43 @@ sf::Vector2f targetSize;
     sf::Texture pointsphoto;
     sf::Sprite points;
     int zlotowkiValue = 0;
-    sf::Font font; 
+    sf::Font font;
     sf::Text zlotowkiText;
     std::ifstream zlotowkiFile;
     float speedMultiplier;
-bool ziarenkoClicked = false;
+    bool ziarenkoClicked = false;
 
-void loadAnimalPositions();
-void saveAnimalPositions();
+    void loadAnimalPositions();
+    void saveAnimalPositions();
 
-float differenceInSeconds;
-std::chrono::duration<double> difference = std::chrono::duration<double>::zero();
-     bool initializeds = false;
+    float differenceInSeconds;
+    std::chrono::duration<double> difference = std::chrono::duration<double>::zero();
+    bool initializeds = false;
 
-     bool shouldStops = false;
-     sf::Clock stopClocks;
-    //const float stopTimes = 5.f;
-    time_t czas; 
-    tm* czas_info;
-sf::Texture swiniaEndTexture;
-sf::Texture krowaEndTexture;
-sf::Texture kuraEndTexture;
-float remainingTimeSwinia;
-float remainingTimeKrowa;
-float remainingTimeKura;
+    bool shouldStops = false;
+    sf::Clock stopClocks;
+    // const float stopTimes = 5.f;
+    time_t czas;
+    tm *czas_info;
+    sf::Texture swiniaEndTexture;
+    sf::Texture krowaEndTexture;
+    sf::Texture kuraEndTexture;
+    float remainingTimeSwinia;
+    float remainingTimeKrowa;
+    float remainingTimeKura;
     sf::Texture zdjklodka;
     sf::Sprite klodkaswinia;
     sf::Sprite klodkakrowa;
     sf::Sprite klodkakura;
 
-bool swinkazyje;
-bool krowkazyje;
-bool kurkazyje;
+    bool swinkazyje;
+    bool krowkazyje;
+    bool kurkazyje;
 
     sf::Vector2f initialPositionKrowa;
     sf::Vector2f initialPositionSwinia;
-sf::Vector2f initialPositionKura;
-void znakpomocy();
+    sf::Vector2f initialPositionKura;
+    void znakpomocy();
     void switchTofarm();
     void handleEvents();
     void render();

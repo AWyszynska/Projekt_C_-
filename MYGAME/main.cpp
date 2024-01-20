@@ -11,17 +11,16 @@
 #include "hodowla.h"
 #include "mousehoverdisplay.h"
 #include "valuehandler.h"
-int main() {
+int main()
+{
 
-
-    //Menu menu;
-    //menu.run();
-
+    // Menu menu;
+    // menu.run();
 
     sf::RenderWindow window(sf::VideoMode(1200, 800), "handlarz");
-   window.setFramerateLimit(60);
+    window.setFramerateLimit(60);
 
-static Hodowla hodowla(window);
+    static Hodowla hodowla(window);
     hodowla.run();
 
     return 0;
