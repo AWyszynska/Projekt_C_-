@@ -33,10 +33,10 @@ private:
     sf::Font font; 
     sf::Text zlotowkiText;
 
-sf::Texture carrottolinephoto;
-sf::Texture strawberrytolinephoto;
-sf::Sprite carrottoline;
-sf::Sprite strawberrytoline;
+    sf::Texture carrottolinephoto;
+    sf::Texture strawberrytolinephoto;
+    sf::Sprite carrottoline;
+    sf::Sprite strawberrytoline;
 
 
     sf::Texture skrzynkazdj;
@@ -50,7 +50,7 @@ sf::Sprite strawberrytoline;
     sf::Texture cavephoto;
     sf::Texture animalphoto;
     sf::Texture shopphoto;
-Openall* openall;
+    Openall* openall;
     sf::Texture obraz1;
     sf::Texture obraz2;
     sf::Texture obraz3;
@@ -62,11 +62,11 @@ Openall* openall;
     sf::Texture obraz9;
     sf::Texture pointsphoto;
     sf::Sprite points;
-sf::Text text;
- std::vector<char> ReadSigns;
-  char Signs;
-   std::vector<int> Readvalues;
-  int valuess;
+    sf::Text text;
+    std::vector<char> ReadSigns;
+    char Signs;
+    std::vector<int> Readvalues;
+    int valuess;
     int xPos;
     bool openwerehouse = false;
     bool sorrywiondowisopen = true;
