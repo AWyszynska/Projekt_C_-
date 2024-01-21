@@ -10,7 +10,7 @@
 #include <ctime>
 #include <sstream>
 #include "openall.h"
-#include "mousehoverdisplay.h"
+#include "HoverDisplayss.h"
 
 class Orchard
 {
@@ -48,7 +48,10 @@ private:
     sf::Sprite background;
     sf::Texture backgroundTexture;
     int currentImage;
-
+HoverDisplays* hoverDisplay; 
+HoverDisplays* hoverDisplay2; 
+HoverDisplays* hoverDisplay3;
+HoverDisplays* hoverDisplay4;
     std::vector<float> positions;
     sf::Clock clock;
 

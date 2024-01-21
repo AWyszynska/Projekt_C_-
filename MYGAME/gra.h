@@ -9,7 +9,8 @@
 #include "openall.h"
 #include <vector> 
 #include <fstream>
-#include "mousehoverdisplay.h"
+#include "HoverDisplayss.h"
+//#include "mousehoverdisplay.h"
 
 class Game {
 public:
@@ -19,7 +20,7 @@ public:
 ~Game();
 private:
  sf::RenderWindow& window;
- MouseHoverDisplay hoverDisplay;
+//MouseHoverDisplay hoverDisplay;
     Guzik ogrod;
     Guzik sad; 
     Guzik kopalnia;   
@@ -44,7 +45,10 @@ private:
     std::ifstream zlotowkiFile;
     sf::Texture backgroundTexture;
     sf::Vector2i clickPosition;
-
+HoverDisplays* hoverDisplay; 
+HoverDisplays* hoverDisplay2; 
+HoverDisplays* hoverDisplay3;
+HoverDisplays* hoverDisplay4;
     sf::Texture guzikTexture;
     sf::Texture sadzdjecie;
     sf::Texture cavephoto;

@@ -12,7 +12,7 @@ Hodowla::Hodowla(sf::RenderWindow &window) : window(window),
                                              openall(nullptr)
 {
 
-    if (!font.loadFromFile("Flottflott.ttf"))
+    if (!font.loadFromFile("Flottflott.ttf"))//czcionka
     {
         std::cout << "Error loading font file!" << std::endl;
     }
@@ -30,7 +30,7 @@ Hodowla::Hodowla(sf::RenderWindow &window) : window(window),
         zlotowkiFile.close();
     }
 
-    if (!backgroundTexture.loadFromFile("hodowlazdj/hodowla1.png"))
+    if (!backgroundTexture.loadFromFile("hodowlazdj/hodowla1.png"))//tło
     {
         std::cerr << "Błąd podczas wczytywania tła." << std::endl;
     }
@@ -41,7 +41,7 @@ Hodowla::Hodowla(sf::RenderWindow &window) : window(window),
     }
     exit.setTexture(exittextur);
 
-    if (!pasek_zdj.loadFromFile("aazdj/pasek.png"))
+    if (!pasek_zdj.loadFromFile("aazdj/pasek.png"))//pasek
     {
         std::cerr << "Błąd podczas wczytywania." << std::endl;
     }
@@ -66,10 +66,10 @@ Hodowla::Hodowla(sf::RenderWindow &window) : window(window),
     size = sf::Vector2f(0.15f, 0.15f);
     targetSize = size;
 
-    initialPositionKrowa = sf::Vector2f(370.f, 400.f);
+    initialPositionKrowa = sf::Vector2f(370.f, 400.f);// dodaje początkowe pozycje zwierzętom
     initialPositionSwinia = sf::Vector2f(0.f, 420.f);
     initialPositionKura = sf::Vector2f(440.f, 700.f);
-    if (!swiniaEndTexture.loadFromFile("hodowlazdj/swinka1zdechla.png"))
+    if (!swiniaEndTexture.loadFromFile("hodowlazdj/swinka1zdechla.png"))//generuje obrazki pupili
     {
         std::cerr << "Błąd podczas wczytywania tła." << std::endl;
     }
@@ -82,7 +82,7 @@ Hodowla::Hodowla(sf::RenderWindow &window) : window(window),
         std::cerr << "Błąd podczas wczytywania tła." << std::endl;
     }
 
-    std::ifstream stateFile("hodowlazdj/animal_states.txt");
+    std::ifstream stateFile("hodowlazdj/animal_states.txt");//zapsuje czy zwierzątka żyją czy nie 
     if (stateFile.is_open())
     {
         stateFile >> swinkazyje >> krowkazyje >> kurkazyje;
@@ -95,6 +95,7 @@ Hodowla::Hodowla(sf::RenderWindow &window) : window(window),
         kurkazyje = false;
     }
 }
+//dodaje pomoc, znak zapytania w rogu
 void Hodowla::addhelp()
 {
     if (!zapytaniezdj.loadFromFile("znakzapytania/zapytanie2.png"))
@@ -105,6 +106,7 @@ void Hodowla::addhelp()
     znakzapytania.setPosition(1080.0f, 660.0f);
     znakzapytania.setScale(0.2f, 0.2f);
 }
+//wyczytuje wartości żeby potem je dodać na pasku zadan na dole
 void Hodowla::renderTopasek()
 {
     std::ifstream file("wypisz_values.txt");
@@ -135,6 +137,7 @@ void Hodowla::renderTopasek()
     }
     files.close();
 }
+//zdjęcia trzech kropek, które otwierają magazyn 
 void Hodowla::addstorage()
 {
     if (!pointsphoto.loadFromFile("aazdj/kropki.png"))
@@ -146,22 +149,19 @@ void Hodowla::addstorage()
     points.setScale(0.4f, 0.4f);
     window.draw(points);
 }
-
+//generowanie wartości do paska na dole
 void Hodowla::addToPasek()
 {
     int position = 270;
     int interval = 150;
     int displayedValues = 0;
     int displayedVal = 0;
-    // MouseHoverDisplay hoverDisplay(window, ReadSigns,true);
-    // sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-    // hoverDisplay.displayImageOnHover(mousePosition);
     int numIterations = std::min(static_cast<int>(ReadSigns.size()), 4);
     for (int i = 0; i < numIterations; i++)
     {
         if (displayedValues >= 4)
         {
-            break; // Przerwij pętlę po wyświetleniu 3 wartości
+            break; 
         }
         if (ReadSigns[i] == 'P')
         {
@@ -392,7 +392,7 @@ void Hodowla::addToPasek()
         }
     }
 }
-
+//zamienia czas na sekundy
 void Hodowla::loadtimes()
 {
     std::ifstream timeFile("hodowlazdj/czaszamknieciahodowla.txt");
@@ -456,7 +456,7 @@ void Hodowla::loadtimes()
         std::cerr << "Unable to open the file to read time!" << std::endl;
     }
 }
-
+//dodaje zwierzęta zdjęcie do wartości sprite
 void Hodowla::dodajzwierzeta()
 {
     if (!krowazdj.loadFromFile("hodowlazdj/krowa1.png"))
@@ -487,7 +487,7 @@ void Hodowla::handleEvents()
     sf::Event event;
     while (window.pollEvent(event))
     {
-        if (event.type == sf::Event::Closed)
+        if (event.type == sf::Event::Closed)//gdy wychodzisz z klasy zapisuje wartości 
         {
             savetimeall();
             zyjeczynie();
@@ -496,7 +496,7 @@ void Hodowla::handleEvents()
         }
         else if (event.type == sf::Event::MouseButtonPressed)
         {
-            if (openwerehouse)
+            if (openwerehouse)//otwiera mazagyn
             {
 
                 openall->handleMouseEvent(event);
@@ -504,14 +504,7 @@ void Hodowla::handleEvents()
                 Readvalues = openall->getIntValues();
             }
         }
-        else if (event.type == sf::Event::MouseButtonPressed)
-        {
-            if (event.mouseButton.button == sf::Mouse::Left)
-            {
-                // clickPosition = sf::Mouse::getPosition(window);
-                // std::cout << "x: " << clickPosition.x << " y: " << clickPosition.y << std::endl;
-            }
-        }
+        
         else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
         {
             sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
@@ -533,7 +526,7 @@ void Hodowla::handleEvents()
                 pomocotwarta = false;
             }
 
-            if (ziarenko.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
+            if (ziarenko.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))//gdy naciśniesz ziarenko pszenicy ono rośnie
             {
                 if (!ziarenkoClicked)
                 {
@@ -546,7 +539,7 @@ void Hodowla::handleEvents()
                     ziarenkoClicked = false;
                 }
             }
-
+//odblokowywuje zwierzęta jeśli jest taka możliwość
             else if (klodkaswinia.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) && !swinkazyje)
             {
                 if (std::find(ReadSigns.begin(), ReadSigns.end(), 'W') != ReadSigns.end())
@@ -616,7 +609,7 @@ void Hodowla::handleEvents()
                     }
                 }
             }
-            if (swinia.getGlobalBounds().contains(mousePos) && timerBar->isTimeUp())
+            if (swinia.getGlobalBounds().contains(mousePos) && timerBar->isTimeUp())//jeśli czas minie zwierzątko ginie
             {
                 swinkazyje = false;
             }
@@ -628,7 +621,7 @@ void Hodowla::handleEvents()
             {
                 kurkazyje = false;
             }
-            else if (ziarenkoClicked && krowa.getGlobalBounds().contains(mousePos))
+            else if (ziarenkoClicked && krowa.getGlobalBounds().contains(mousePos))//karmienie pszenicą zwierząt
             {
 
                 timerBarkrowa->addTime(2.0f);
@@ -690,7 +683,7 @@ void Hodowla::handleEvents()
     }
 }
 
-void Hodowla::updateCowMovementKrowa()
+void Hodowla::updateCowMovementKrowa()//generuje krowę, jej tor ruchu i pozostałych zwirząt
 {
     if (isKrowaAlive && krowkazyje)
     {
@@ -808,7 +801,7 @@ void Hodowla::updateCowMovementKura()
     }
 }
 
-void Hodowla::saveAnimalPositions()
+void Hodowla::saveAnimalPositions()// zapisuje pozycje zwierząt po wyjściu z pliku 
 {
     std::ofstream file("animal_positions.txt");
     if (file.is_open())
@@ -824,7 +817,7 @@ void Hodowla::saveAnimalPositions()
     }
 }
 
-void Hodowla::loadAnimalPositions()
+void Hodowla::loadAnimalPositions()// generuje pozycje zwierząt po otwarciu plik, jeśli w pliku nie ma danej pozycji daje standardowe
 {
     std::ifstream file("animal_positions.txt");
     float x, y;
@@ -913,7 +906,7 @@ void Hodowla::updateCowMovementSwinia()
     }
 }
 
-void Hodowla::deadanimals()
+void Hodowla::deadanimals()// jeśli czas się skończy zwierzątka umierają 
 {
     if (timerBar->isTimeUp())
     {
@@ -939,8 +932,8 @@ void Hodowla::deadanimals()
 void Hodowla::run()
 {
     loadTimeFromFile();
+    //klasa generująca zielone paski na górze zwierząt
     timerBar = new TimerBar(czasswinia, (czasswinia / 20) * 200.0, 20.0f, sf::Color::Green);
-
     timerBarkrowa = new TimerBar(czaskrowa, (czaskrowa / 60) * 200.0, 20.0f, sf::Color::Green);
     timerBarkura = new TimerBar(czaskura, (czaskura / 80) * 200.0, 20.0f, sf::Color::Green);
     timerBar->setPosition(100.0f, 390.0f);
@@ -949,6 +942,12 @@ void Hodowla::run()
     loadAnimalPositions();
     renderTopasek();
     openall = new Openall(window, ReadSigns, Readvalues);
+        if(!ReadSigns.empty()){
+    hoverDisplay = new HoverDisplays(window,ReadSigns[0],270,400,690,790);//generuje dymki
+    hoverDisplay2 = new HoverDisplays(window,ReadSigns[1],410,530,690,790);
+    hoverDisplay3 = new HoverDisplays(window,ReadSigns[2],540,670,690,790);
+    hoverDisplay4 = new HoverDisplays(window,ReadSigns[3],670,800,690,790);
+    }
     while (window.isOpen())
     {
         czas = time(nullptr);
@@ -957,7 +956,7 @@ void Hodowla::run()
         render();
     }
 }
-
+//zapisuje wartości z paska gdy wychodzisz z klasy
 void Hodowla::switchplace()
 {
     std::ofstream wypiszFile("wypisz_values.txt");
@@ -994,7 +993,7 @@ void Hodowla::znakpomocy()
     window.draw(tablicapomoc);
     window.draw(wyjscietablica);
 }
-
+//generuje kłodkę gdy zwierzęta nie są jeszcze odblokowane 
 void Hodowla::addpadlock()
 {
     if (!zdjklodka.loadFromFile("hodowlazdj/klodka.png"))
@@ -1068,13 +1067,21 @@ void Hodowla::render()
     addpadlock();
 
     // std::cout<<Readvalues[0]<<std::endl;
+    if (swinkazyje)
+    {
     timerBar->update();
     timerBar->draw(window);
+    }
+    if (krowkazyje)
+    {
     timerBarkrowa->update();
     timerBarkrowa->draw(window);
+    }
+    if (kurkazyje)
+    {
     timerBarkura->update();
     timerBarkura->draw(window);
-
+    }
     addstorage();
     if (!openwerehouse)
     {
@@ -1085,6 +1092,12 @@ void Hodowla::render()
 
         openall->drawtank();
         openall->addsToPasek();
+    }
+        if(!ReadSigns.empty()){
+    hoverDisplay->update();
+    hoverDisplay2->update();
+    hoverDisplay3->update();
+    hoverDisplay4->update();
     }
     window.display();
 }
@@ -1106,6 +1119,7 @@ void Hodowla::savetimeall()
         std::cerr << "Unable to open the file to save time!" << std::endl;
     }
 }
+// zapsiuje 0,1 gdy zwierzę żyje czy nie
 void Hodowla::zyjeczynie()
 {
     std::ofstream stateFile("hodowlazdj/animal_states.txt");
@@ -1119,6 +1133,7 @@ void Hodowla::zyjeczynie()
         std::cerr << "Unable to open the file to save states!" << std::endl;
     }
 }
+//generuje czs życia
 void Hodowla::saveTimeToFile()
 {
     std::ofstream file("hodowlazdj/czaszycia.txt");
@@ -1184,4 +1199,8 @@ Hodowla::~Hodowla()
     delete timerBar;
     delete timerBarkrowa;
     delete timerBarkura;
+    delete hoverDisplay;
+    delete hoverDisplay2;
+    delete hoverDisplay3;
+    delete hoverDisplay4;
 }

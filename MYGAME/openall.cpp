@@ -2,7 +2,7 @@
 #include "openall.h" 
 
 Openall::Openall(sf::RenderWindow& window,std::vector<char>& charvalues,std::vector<int>& intvalues)
- : window(window), charvalues(charvalues), intvalues(intvalues), firstItemSelected(false),hoverDisplay(window, charvalues, false) {
+ : window(window), charvalues(charvalues), intvalues(intvalues), firstItemSelected(false) {
     
 }
 void Openall::drawtank(){
@@ -10,7 +10,7 @@ void Openall::drawtank(){
         //std::cout<<charvalues[i];
     //}
              sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-        hoverDisplay.displayImageOnHover(mousePosition);
+        //hoverDisplay.displayImageOnHover(mousePosition);
 if (!werehousephoto.loadFromFile("aazdj/magazynn.png"))
     {
         std::cerr << "Błąd podczas wczytywania tła." << std::endl;
@@ -41,7 +41,7 @@ void Openall::addsToPasek(){
     float odleglosc = 700.f;
 
     sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-    hoverDisplay.displayImageOnHover(mousePosition);
+    //hoverDisplay.displayImageOnHover(mousePosition);
      for (int i = 0; i < charvalues.size(); i++ ) {
         itemCounter++;
 

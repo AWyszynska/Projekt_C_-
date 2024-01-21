@@ -11,7 +11,7 @@
 #include <sstream>
 #include "openall.h"
 #include "timerbar.h"
-#include "mousehoverdisplay.h"
+#include "HoverDisplayss.h"
 class Hodowla
 {
 
@@ -33,7 +33,10 @@ private:
     sf::RenderWindow &window;
     sf::Sprite background;
     sf::Texture backgroundTexture;
-
+    HoverDisplays* hoverDisplay; 
+    HoverDisplays* hoverDisplay2; 
+    HoverDisplays* hoverDisplay3;
+    HoverDisplays* hoverDisplay4;
     Openall *openall;
     sf::Texture pasek_zdj;
     sf::Sprite pasek;

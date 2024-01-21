@@ -11,14 +11,14 @@ g++ -c orchard.cpp -o orchard.o
 g++ -c cave.cpp -o cave.o
 g++ -c hodowla.cpp -o hodowla.o
 g++ -c timerbar.cpp -o timerbar.o
-g++ -c mousehoverdisplay.cpp -o mousehoverdisplay.o
 g++ -c valuehandler.cpp -o valuehandler.o
+g++ -c HoverDisplayss.cpp -o HoverDisplayss.o
 g++ main.o openall.o gra.o guzik.o menu.o garden.o guzikwarz.o shop.o guziksklep.o cave.o orchard.o hodowla.o timerbar.o-o handlarz -lsfml-graphics -lsfml-window -lsfml-system
 
 
 
 
-
+g++ -c mousehoverdisplay.cpp -o mousehoverdisplay.o
 
 
 

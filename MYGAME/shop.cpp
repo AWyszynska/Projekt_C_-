@@ -6,7 +6,7 @@
 #include <sstream>
 
 Shop::Shop(sf::RenderWindow& window) : window(window),
-    buykernel1(window, sf::Vector2f(210, 210), sf::Vector2f(100, 100)),
+    buykernel1(window, sf::Vector2f(210, 210), sf::Vector2f(100, 100)),//klasa ktora generuje rzeczy do kupienia
     buykernel2(window, sf::Vector2f(376, 210), sf::Vector2f(100, 100)),
     buykernel3(window, sf::Vector2f(542, 210), sf::Vector2f(100, 100)),
     buykernel4(window, sf::Vector2f(712, 210), sf::Vector2f(100, 100)),
@@ -16,21 +16,17 @@ Shop::Shop(sf::RenderWindow& window) : window(window),
     buykernel8(window, sf::Vector2f(552, 360), sf::Vector2f(70, 100)),
     buykernel9(window, sf::Vector2f(722, 360), sf::Vector2f(70, 100)),
     exit(window, sf::Vector2f(50, 50), sf::Vector2f(100, 100)),
-    isRunning(true),zlotowki(100000000),showLowMoneyMessage(false),
+    isRunning(true),zlotowki(10000000),showLowMoneyMessage(false),
     pieniadze(sf::Text("", font, 30)),openall(nullptr) {
     window.setFramerateLimit(60);
 
 
-
+//tło
     if (!backgroundTexture.loadFromFile("aazdj/sklepzdj.png")) {
         std::cerr << "Błąd podczas wczytywania tła." << std::endl;
     }
     background.setTexture(backgroundTexture);
-   
-
-
-
-
+  //czcionka
         if (!font.loadFromFile("Flottflott.ttf")) {
             std::cout << "Error loading font file!" << std::endl;
         }
@@ -46,8 +42,6 @@ if (!exittextur.loadFromFile("aazdj/wyjscie.png")) {
    }
    exit.setTexture(exittextur);
 
-
-
         pieniadze.setFont(font);
         pieniadze.setCharacterSize(30);
         pieniadze.setFillColor(sf::Color::Black);
@@ -56,7 +50,7 @@ if (!exittextur.loadFromFile("aazdj/wyjscie.png")) {
     zlotowkiStr = ss.str();
     
 }
-
+//dodaje wartości do klasy wypisz żeby potem dać je na dole strony
 void Shop::renderTopasek(){
     std::ifstream file("wypisz_values.txt");
     if (!file.is_open()) {
@@ -82,7 +76,7 @@ void Shop::renderTopasek(){
 }
 
 
-
+//dodaje cenówki, pasek i skrzynkę
 void Shop::addprice(){
     if (!skrzynkazdj.loadFromFile("aazdj/skrzynka.png")) {
         std::cerr << "Błąd podczas wczytywania tła." << std::endl;
@@ -168,7 +162,7 @@ void Shop::addprice(){
     price9.setPosition(674.0f,420.0f);
     price9.setScale(0.5f, 0.5f);
 }
-
+//totaje tekstury do odpowiednich struktur 
 void Shop::addkernalforshelf(){
     if (!ziar1.loadFromFile("aazdj/nasiono1.png"))
     {
@@ -222,6 +216,12 @@ void Shop::addkernalforshelf(){
 void Shop::run() {
     renderTopasek();
     openall = new Openall(window, wypisz, letter);
+        if(!wypisz.empty()){
+    hoverDisplay = new HoverDisplays(window,wypisz[0],270,400,690,790);
+    hoverDisplay2 = new HoverDisplays(window,wypisz[1],410,530,690,790);
+    hoverDisplay3 = new HoverDisplays(window,wypisz[2],540,670,690,790);
+    hoverDisplay4 = new HoverDisplays(window,wypisz[3],670,800,690,790);
+    }
     while (window.isOpen()) {
         handleEvents();
         addprice();
@@ -242,7 +242,7 @@ void Shop::addstorage(){
 }
 void Shop::handleEvents() {
     sf::Event event;
-    ValueHandler valueHandler(window, wypisz, letter, zlotowki);
+    ValueHandler valueHandler(window, wypisz, letter, zlotowki);//klasa ktora sprzedaje rzeczy
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
                     std::ofstream wypiszFile("wypisz_values.txt");
@@ -302,6 +302,7 @@ void Shop::handleEvents() {
             else if(wyjscietablica.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))){
                     pomocotwarta = false;
                 } 
+                // gdy gdy kupujesz coś do zmiejsza się cena i dodaje do wektora wypisz
             if (buykernel1.isHoveredButton()) {//pszenica
                          if (zlotowki >= 10) {
                     zlotowki -= 10;
@@ -663,6 +664,7 @@ else if (buykernel8.isHoveredButton()) {
         }
     }
 }
+//dodaje wartości do paska na dole ,,generuje"
 void Shop::tableforunder(){
 
         int position = 270;
@@ -919,12 +921,17 @@ window.draw(pieniadze);
 window.draw(points);
     if (showLowMoneyMessage) {
         sf::Text lowMoneyMessage;
-        lowMoneyMessage.setFont(font); 
+        lowMoneyMessage.setFont(font); //jeśni nie będzie cię stać tutaj jest strzeżenie 
         lowMoneyMessage.setString("Masz za malo pieniedzy aby to kupic");
         lowMoneyMessage.setCharacterSize(30); 
         lowMoneyMessage.setFillColor(sf::Color::Red); 
         lowMoneyMessage.setPosition(window.getSize().x / 2 - lowMoneyMessage.getLocalBounds().width / 2, 600);
-        
+            if(!wypisz.empty()){
+    hoverDisplay->update();
+    hoverDisplay2->update();
+    hoverDisplay3->update();
+    hoverDisplay4->update();
+    }
         window.draw(lowMoneyMessage);
     }
     addstorage();
@@ -971,4 +978,8 @@ void Shop::switchTofarm() {
 }
 Shop::~Shop() {
     delete openall;
+    delete hoverDisplay;
+    delete hoverDisplay2;
+    delete hoverDisplay3;
+    delete hoverDisplay4;
 }

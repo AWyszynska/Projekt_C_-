@@ -8,13 +8,13 @@ Orchard::Orchard(sf::RenderWindow &window) : window(window),
                                              isSadzonkaPressed(false), currentImage(0), currentX(-25.0f), openall(nullptr)
 {
     window.setFramerateLimit(60);
-
+//rysuje tło
     if (!backgroundTexture.loadFromFile("zdjeciasad/zdjeciesadu.png"))
     {
         std::cerr << "Błąd podczas wczytywania tła." << std::endl;
     }
     background.setTexture(backgroundTexture);
-
+//magazyn zjęcie 
     if (!tankphoto.loadFromFile("aazdj/magazynn.png"))
     {
         std::cerr << "Błąd podczas wczytywania tła." << std::endl;
@@ -37,7 +37,7 @@ Orchard::Orchard(sf::RenderWindow &window) : window(window),
         std::cout << "blad\n";
     }
     exit.setTexture(exittextur);
-
+//skrzynka w rogu
     if (!skrzynkazdj.loadFromFile("aazdj/skrzynka.png"))
     {
         std::cerr << "Błąd podczas wczytywania tła." << std::endl;
@@ -45,7 +45,7 @@ Orchard::Orchard(sf::RenderWindow &window) : window(window),
     skrzynka.setTexture(skrzynkazdj);
     skrzynka.setPosition(950.0f, 0.0f);
     skrzynka.setScale(0.5f, 0.5f);
-
+//czcionka i pieniądze w rogu
     if (!font.loadFromFile("Flottflott.ttf"))
     {
         std::cout << "Error loading font file!" << std::endl;
@@ -65,7 +65,7 @@ Orchard::Orchard(sf::RenderWindow &window) : window(window),
         zlotowkiFile.close();
     }
 }
-
+//dodaje kopce i pasek na dole
 void Orchard::kopcephoto()
 {
 
@@ -94,7 +94,7 @@ void Orchard::kopcephoto()
     dokopiec2.setPosition(465.0f, 575.0f);
     dokopiec3.setPosition(752.0f, 575.0f);
 }
-
+//wyczytuje pozycje obecnych drzew ktore są w ziemi
 void Orchard::loadPositions()
 {
     std::ifstream positionsFile("zdjeciasad/pozycjadrzewa.txt");
@@ -112,7 +112,7 @@ void Orchard::loadPositions()
         std::cerr << "Unable to open positions file!" << std::endl;
     }
 }
-
+//na podstawie daty oblicza sekundy które mineły 
 void Orchard::loadTimes()
 {
     std::ifstream timeFile("zdjeciasad/czascalydrzewa.txt");
@@ -178,7 +178,8 @@ void Orchard::loadTimes()
         std::cerr << "Unable to open the file to read time!" << std::endl;
     }
 }
-
+//duża funkcja ktora po pierwsze dodaje wartości do struktury po dodaniu wartości 
+//do planting która zapisuje zasadzone nasiona a po drugie zmienia zdjęcia wraz z upływem czasu 
 void Orchard::changeImage()
 {
 
@@ -392,7 +393,7 @@ void Orchard::changeImage()
         window.draw(displayedImages[i].sprite);
     }
 }
-
+//dodaje kropki na końcu paska
 void Orchard::addstorage()
 {
     if (!pointsphoto.loadFromFile("aazdj/kropki.png"))
@@ -404,7 +405,7 @@ void Orchard::addstorage()
     points.setScale(0.4f, 0.4f);
     window.draw(points);
 }
-
+//wyczytuje wartości ktore są zasadzone do pliku
 void Orchard::loadPlantingInfo()
 {
     std::ifstream plantingFile("zdjeciasad/plantingdrzewa.txt");
@@ -425,7 +426,7 @@ void Orchard::loadPlantingInfo()
     {
         std::cerr << "Unable to open planting info file!" << std::endl;
     }
-
+//zapisuje poste pozycje na których nie ma zasadzonej rośliny
     std::ifstream plantingFiless("zdjeciasad/pozycjedodatkowedrzewa.txt");
     if (plantingFiless.is_open())
     {
@@ -442,6 +443,7 @@ void Orchard::loadPlantingInfo()
     {
         std::cerr << "Unable to open planting info file!" << std::endl;
     }
+    //zapisuje czas zasadzenia drzew
     std::ifstream timesFile("zdjeciasad/czasdrzewka.txt");
     if (timesFile.is_open())
     {
@@ -457,7 +459,7 @@ void Orchard::loadPlantingInfo()
         std::cerr << "Unable to open times file!" << std::endl;
     }
 }
-
+//wyczytuje wartości z pliku które potem zapisywane sa na dole paska 
 void Orchard::renderTopasek()
 {
     std::ifstream file("wypisz_values.txt");
@@ -490,15 +492,13 @@ void Orchard::renderTopasek()
     // Readvalues << "" << std::endl;
     files.close();
 }
+//Generuje wartości na dole paska 
 void Orchard::addToPasek()
 {
     position = 270;
     int interval = 150;
     int displayedValues = 0;
     int displayedVal = 0;
-    // MouseHoverDisplay hoverDisplay(window, ReadSigns,true);
-    // sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-    // hoverDisplay.displayImageOnHover(mousePosition);
     int numIterations = std::min(static_cast<int>(ReadSigns.size()), 4);
     for (int i = 0; i < numIterations; i++)
     {
@@ -736,6 +736,7 @@ void Orchard::addToPasek()
         }
         position += interval;
     }
+    //generuje ilość elementów
     xPos = 220;
     for (int i = 0; i < numIterations; ++i)
     {
@@ -759,7 +760,14 @@ void Orchard::run()
 
     renderTopasek();
     openall = new Openall(window, ReadSigns, Readvalues);
-    loadPlantingInfo();
+    //klasa która generuje zdjęcia po najechaniu na przedmiot
+    if(!ReadSigns.empty()){
+    hoverDisplay = new HoverDisplays(window,ReadSigns[0],270,400,690,790);
+    hoverDisplay2 = new HoverDisplays(window,ReadSigns[1],410,530,690,790);
+    hoverDisplay3 = new HoverDisplays(window,ReadSigns[2],540,670,690,790);
+    hoverDisplay4 = new HoverDisplays(window,ReadSigns[3],670,800,690,790);
+    }
+    loadPlantingInfo();//po odworzeniu klasy wczytuje wartości
     loadPositions();
     loadTimes();
 
@@ -767,14 +775,11 @@ void Orchard::run()
     {
 
         handleEvents();
-        // handleSadzonkaInteraction();
-        // changeImage();
 
         czas = time(nullptr);
-        czas_info = localtime(&czas);
+        czas_info = localtime(&czas);//wyczytuje obecny czas
         render();
         kopcephoto();
-        // bleeaddtoline();
         sf::sleep(sf::milliseconds(10));
     }
 }
@@ -782,7 +787,7 @@ void Orchard::run()
 void Orchard::handleEvents()
 {
     sf::Event event;
-    if (event.type == sf::Event::Closed)
+    if (event.type == sf::Event::Closed)// po zamknięciu strony zapisuje wartości do pliku
     {
         savetimeall();
         savePositions();
@@ -807,7 +812,7 @@ void Orchard::handleEvents()
         }
         else if (event.type == sf::Event::MouseButtonPressed)
         {
-            if (openwerehouse)
+            if (openwerehouse)//klasa generująca magazyn
             {
 
                 openall->handleMouseEvent(event);
@@ -819,7 +824,7 @@ void Orchard::handleEvents()
         {
             sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
             sf::Vector2f mousePos = window.mapPixelToCoords(mousePosition);
-            if (sorrywiondowisopen)
+            if (sorrywiondowisopen)//jeśli magazyn jest otwarty nie można niczego dookoła nacisnąć 
             {
                 if (exit.isHoveredButton())
                 {
@@ -833,7 +838,9 @@ void Orchard::handleEvents()
                 {
                     pomocotwarta = false;
                 }
-                else if (added < 3)
+                //jeśli naciśniesz ja jakąś wartość gdzie masz możliwość zasadzenia to sadzi je obecnie
+                // jeśli naciśniesz nasionko jabka 
+                else if (added < 3)//limit 
                 {
                     if (sprite4.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) && zasadzonepszenica)
                     {
@@ -907,6 +914,7 @@ void Orchard::handleEvents()
                         added++;
                     }
                 }
+                //jeśli roślinki już urosną można je zebrać
                 for (size_t i = 0; i < displayedImages.size(); ++i)
                 {
                     if (displayedImages[i].sprite.getGlobalBounds().contains(mousePos) && planting[i] == 'J' && displayedImages[i].timer.asSeconds() >= 10)
@@ -1041,7 +1049,7 @@ void Orchard::handleEvents()
         }
     }
 }
-
+//zapisuje czas całkowity
 void Orchard::savetimeall()
 {
 
@@ -1059,7 +1067,7 @@ void Orchard::savetimeall()
         std::cerr << "Unable to open the file to save time!" << std::endl;
     }
 }
-
+//zapisuje ich pozycje
 void Orchard::savePositions()
 {
     std::ofstream positionsFile("zdjeciasad/pozycjadrzewa.txt");
@@ -1077,7 +1085,7 @@ void Orchard::savePositions()
         std::cerr << "Unable to open positions file!" << std::endl;
     }
 }
-
+//zapisuje czas rośnięcia drzew
 void Orchard::saveTimes()
 {
     std::ofstream timesFile("zdjeciasad/czasdrzewka.txt");
@@ -1095,7 +1103,7 @@ void Orchard::saveTimes()
         std::cerr << "Unable to open times file!" << std::endl;
     }
 }
-
+//zapisuje która roślina jest obwecnie posadzona 
 void Orchard::savePlantingInfo()
 {
     std::ofstream plantingFile("zdjeciasad/plantingdrzewa.txt");
@@ -1113,7 +1121,7 @@ void Orchard::savePlantingInfo()
         std::cerr << "Unable to open planting info file!" << std::endl;
     }
 }
-
+//zapisuje pozyje gdzie nie są zasadzone drzewa
 void Orchard::savepositionAdditional()
 {
     std::ofstream File("zdjeciasad/pozycjedodatkowedrzewa.txt");
@@ -1131,6 +1139,7 @@ void Orchard::savepositionAdditional()
         std::cerr << "Unable to open planting info file!" << std::endl;
     }
 }
+//dodaje pomoc
 void Orchard::addhelp()
 {
     if (!zapytaniezdj.loadFromFile("znakzapytania/zapytanie2.png"))
@@ -1192,6 +1201,12 @@ void Orchard::render()
         znakpomocy();
     }
     window.draw(znakzapytania);
+    if(!ReadSigns.empty()){
+    hoverDisplay->update();
+    hoverDisplay2->update();
+    hoverDisplay3->update();
+    hoverDisplay4->update();
+    }
     window.display();
 }
 
@@ -1231,4 +1246,8 @@ void Orchard::switchTofarm()
 Orchard::~Orchard()
 {
     delete openall;
+    delete hoverDisplay;
+    delete hoverDisplay2;
+    delete hoverDisplay3;
+    delete hoverDisplay4;
 }

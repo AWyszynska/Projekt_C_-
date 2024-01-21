@@ -10,6 +10,7 @@
 #include "gra.h"
 #include <fstream>
 #include "valuehandler.h"
+#include "HoverDisplayss.h"
 class Shop {
 
 public:
@@ -102,9 +103,12 @@ sf::Text text;
 int xPos;
     char Signs;
         int valuess;
-    int zlotowki = 100000000;
+    int zlotowki;
     sf::Text pieniadze;
-
+HoverDisplays* hoverDisplay; 
+HoverDisplays* hoverDisplay2; 
+HoverDisplays* hoverDisplay3;
+HoverDisplays* hoverDisplay4;
     sf::Texture obraz1;
     sf::Texture obraz2;
     sf::Texture obraz3;

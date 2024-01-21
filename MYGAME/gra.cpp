@@ -8,12 +8,12 @@
 
 Game::Game(sf::RenderWindow& window): window(window),isRunning(true),
 zlotowkiFile("zlotowki_value.txt"),
-ogrod(window, sf::Vector2f(60, 195), sf::Vector2f(332, 245)),
+ogrod(window, sf::Vector2f(60, 195), sf::Vector2f(332, 245)),//za pomocą klasy tworzącej guziki tworze miejsca 
 sad(window, sf::Vector2f(400, 200), sf::Vector2f(335, 340)),
 kopalnia(window, sf::Vector2f(50, 479), sf::Vector2f(638, 321)),
 hodowla(window, sf::Vector2f(815, 75), sf::Vector2f(340, 339)),
 sklep(window, sf::Vector2f(845, 480), sf::Vector2f(340, 339)),
-hoverDisplay(window, ReadSigns,true),openall(nullptr)
+openall(nullptr)
 {
     window.setFramerateLimit(60);
  if (!font.loadFromFile("Flottflott.ttf")) {
@@ -64,6 +64,12 @@ void Game::run()
 {
      renderTopasek();
       openall = new Openall(window, ReadSigns, Readvalues);
+          if(!ReadSigns.empty()){
+    hoverDisplay = new HoverDisplays(window,ReadSigns[0],270,400,690,790);
+    hoverDisplay2 = new HoverDisplays(window,ReadSigns[1],410,530,690,790);
+    hoverDisplay3 = new HoverDisplays(window,ReadSigns[2],540,670,690,790);
+    hoverDisplay4 = new HoverDisplays(window,ReadSigns[3],670,800,690,790);
+    }
     while (window.isOpen()) {
         handleEvents();
         render();
@@ -71,7 +77,7 @@ void Game::run()
 
     }
 }
-
+//dodaje zdjęcia do struktur
 void Game::loadedplace()
 {
         if (!guzikTexture.loadFromFile("aazdj/ggg.png")) {
@@ -121,13 +127,14 @@ void Game::renderTopasek(){
     }
   files.close(); 
 }
+//generuje wartości na pasku na dole
 void Game::addToPasek(){
 int position = 270;
     int interval = 150;
 int displayedValues = 0;
 int displayedVal = 0;
-    sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-    hoverDisplay.displayImageOnHover(mousePosition);
+   // sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+    //hoverDisplay.displayImageOnHover(mousePosition);
     int numIterations = std::min(static_cast<int>(ReadSigns.size()), 4);
     for (int i = 0; i < numIterations; i++ ) {
         if (displayedValues >= 4) {
@@ -359,7 +366,7 @@ void Game::handleEvents() {
         else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
             sf::Vector2f mousePos = window.mapPixelToCoords(mousePosition);
-            
+            // jeśli naciśniesz na dane miejsca przekierowuje Cię do niego
             if (ogrod.isHoveredButton()) {
                 switchToGarden();
             }
@@ -410,16 +417,6 @@ void Game::render()
         sklep.draw();
         hodowla.handleMouseInteraction();
         hodowla.draw();
-/*
-            if (!openwerehouse) {
-        addToPasek();
-    } else {
-
-            openall->drawtank();
-            openall->addsToPasek();
-        
-    }
-*/
         window.draw(pasek);
         window.draw(skrzynka);
         std::ifstream zlotowkiFile("zlotowki_value.txt");
@@ -435,6 +432,12 @@ zlotowkiText.setString(std::to_string(zlotowkiValue));
 
 
        addstorage();
+           if(!ReadSigns.empty()){
+    hoverDisplay->update();
+    hoverDisplay2->update();
+    hoverDisplay3->update();
+    hoverDisplay4->update();
+    }
         window.display();
 }
 
@@ -471,6 +474,10 @@ void Game::switchToHodowla() {
 
 Game::~Game() {
     delete openall;
+    delete hoverDisplay;
+    delete hoverDisplay2;
+    delete hoverDisplay3;
+    delete hoverDisplay4;
 }
 
 

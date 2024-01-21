@@ -10,7 +10,7 @@
 #include <map>
 #include <ctime>
 #include <sstream>
-
+#include "HoverDisplayss.h"
 
 class Garden {
 
@@ -33,7 +33,10 @@ struct DisplayedImage {
 };
 std::vector<sf::Clock> clocksadzonki;
 sf::Clock newClock;
-
+HoverDisplays* hoverDisplay; 
+HoverDisplays* hoverDisplay2; 
+HoverDisplays* hoverDisplay3;
+HoverDisplays* hoverDisplay4;
 float differenceInSeconds;
 std::chrono::duration<double> difference = std::chrono::duration<double>::zero();
 std::vector<DisplayedImage> displayedImages;
@@ -146,6 +149,7 @@ sf::Sprite strawberrytoline;
     sf::Texture tablicapomoczdj;
     sf::Sprite tablicapomoc;
     sf::Sprite wyjscietablica;
+    void handleMouseClick(sf::Event& event);
     void handleEvents();
     void render();
     void kopcephoto();
@@ -167,4 +171,5 @@ sf::Sprite strawberrytoline;
     void addhelp();
     void znakpomocy();
 
+    
 };

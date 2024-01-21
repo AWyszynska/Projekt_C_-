@@ -545,9 +545,9 @@ void Garden::addToPasek()
     int interval = 150;
     int displayedVal = 0;
     int displayedValues = 0;
-   MouseHoverDisplay hoverDisplay(window, ReadSigns,true);
-   sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-   hoverDisplay.displayImageOnHover(mousePosition);
+   //MouseHoverDisplay hoverDisplay(window, ReadSigns,true);
+   //sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+   //hoverDisplay.displayImageOnHover(mousePosition);
     int numIterations = std::min(static_cast<int>(ReadSigns.size()), 4);
     for (int i = 0; i < numIterations; i++)
     {
@@ -808,6 +808,12 @@ void Garden::run()
     renderTopasek();
 
     openall = new Openall(window, ReadSigns, Readvalues);
+    if(!ReadSigns.empty()){
+    hoverDisplay = new HoverDisplays(window,ReadSigns[0],270,400,690,790);
+    hoverDisplay2 = new HoverDisplays(window,ReadSigns[1],410,530,690,790);
+    hoverDisplay3 = new HoverDisplays(window,ReadSigns[2],540,670,690,790);
+    hoverDisplay4 = new HoverDisplays(window,ReadSigns[3],670,800,690,790);
+    }
     loadPlantingInfo();
     loadPositions();
     loadTimes();
@@ -827,7 +833,16 @@ void Garden::run()
         sf::sleep(sf::milliseconds(10));
     }
 }
+void Garden::handleMouseClick(sf::Event& event)
+{
+    if (event.mouseButton.button == sf::Mouse::Left)
+    {
+        sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+        sf::Vector2f worldPos = window.mapPixelToCoords(mousePosition);
 
+        std::cout << "Mouse clicked at: X = " << worldPos.x << ", Y = " << worldPos.y << std::endl;
+    }
+}
 void Garden::handleEvents()
 {
     sf::Event event;
@@ -856,6 +871,7 @@ void Garden::handleEvents()
         }
         else if (event.type == sf::Event::MouseButtonPressed)
         {
+            //handleMouseClick(event);
             if (openwerehouse)
             {
 
@@ -864,6 +880,13 @@ void Garden::handleEvents()
                 Readvalues = openall->getIntValues();
             }
         }
+        // else if (event.mouseButton.button == sf::Mouse::Left) {
+        // Jakieś operacje, które mogą zmodyfikować ReadSigns
+        // ...
+
+        // Aktualizacja HoverDisplays po modyfikacji ReadSigns
+        
+    //}
         else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
         {
 
@@ -1207,9 +1230,10 @@ void Garden::render()
     window.draw(dokopiec4);
     window.draw(points);
     addstorage();
-    addToPasek();
+    
     if (!openwerehouse)
     {
+        addToPasek();
     }
     else
     {
@@ -1224,8 +1248,15 @@ void Garden::render()
     }
 
     window.draw(znakzapytania);
+    if(!ReadSigns.empty()){
+    hoverDisplay->update();
+    hoverDisplay2->update();
+    hoverDisplay3->update();
+    hoverDisplay4->update();
+    }
     window.display();
 }
+
 void Garden::switchplace()
 {
     std::ofstream wypiszFile("wypisz_values.txt");
@@ -1263,4 +1294,8 @@ void Garden::switchTofarm()
 Garden::~Garden()
 {
     delete openall;
+    delete hoverDisplay;
+    delete hoverDisplay2;
+    delete hoverDisplay3;
+    delete hoverDisplay4;
 }

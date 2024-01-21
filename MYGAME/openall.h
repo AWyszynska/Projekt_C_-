@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include "mousehoverdisplay.h"
+//#include "mousehoverdisplay.h"
 
 class Openall {
 public:
@@ -14,7 +14,7 @@ public:
         std::vector<char> getCharValues() const;
     std::vector<int> getIntValues() const;
 private:
-MouseHoverDisplay hoverDisplay;
+//MouseHoverDisplay hoverDisplay;
     sf::RenderWindow& window;
     sf::Texture werehousephoto;
     sf::Sprite werehouse;
