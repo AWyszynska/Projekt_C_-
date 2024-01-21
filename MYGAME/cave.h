@@ -11,7 +11,7 @@
 #include <sstream>
 #include "openall.h"
 #include <random>
-#include "mousehoverdisplay.h"
+//#include "mousehoverdisplay.h"
 class Cave
 {
 

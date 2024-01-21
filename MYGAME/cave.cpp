@@ -6,6 +6,7 @@ Cave::Cave(sf::RenderWindow &window) : window(window),
                                        zlotowkiFile("zlotowki_value.txt"), imagePaths({"kopalnia/skala1.png", "kopalnia/skala2.png", "kopalnia/skala3.png", "kopalnia/skala4.png", "kopalnia/skala5.png", "kopalnia/skala6.png"}),
                                        gen(rd()), dis(0, imagePaths.size() - 1), openall(nullptr)
 {
+    //Wczytuje czcionkę
     if (!font.loadFromFile("Flottflott.ttf"))
     {
         std::cout << "Error loading font file!" << std::endl;
@@ -23,18 +24,19 @@ Cave::Cave(sf::RenderWindow &window) : window(window),
         zlotowkiFile >> zlotowkiValue;
         zlotowkiFile.close();
     }
-
+    //Ustawia tło
     if (!backgroundTexture.loadFromFile("kopalnia/kopalnia.png"))
     {
         std::cerr << "Błąd podczas wczytywania tła." << std::endl;
     }
     background.setTexture(backgroundTexture);
+    //zdjęcie iksa
     if (!exittextur.loadFromFile("aazdj/wyjscie.png"))
     {
         std::cout << "blad\n";
     }
     exit.setTexture(exittextur);
-
+    //Ustawia pasek na dole
     if (!pasek_zdj.loadFromFile("aazdj/pasek.png"))
     {
         std::cerr << "Błąd podczas wczytywania." << std::endl;
@@ -42,6 +44,7 @@ Cave::Cave(sf::RenderWindow &window) : window(window),
     pasek.setTexture(pasek_zdj);
     pasek.setPosition(260.0f, 680.0f);
     pasek.setScale(0.9f, 0.9f);
+    //ustawia skrzynkę
     if (!skrzynkazdj.loadFromFile("aazdj/skrzynka.png"))
     {
         std::cerr << "Błąd podczas wczytywania tła." << std::endl;
@@ -50,7 +53,7 @@ Cave::Cave(sf::RenderWindow &window) : window(window),
     skrzynka.setPosition(950.0f, 0.0f);
     skrzynka.setScale(0.5f, 0.5f);
 }
-
+//Wczytuje z pliku wartości żeby ustawic je potem na dole paska
 void Cave::renderTopasek()
 {
     std::ifstream file("wypisz_values.txt");
@@ -81,6 +84,7 @@ void Cave::renderTopasek()
     }
     files.close();
 }
+//dodaje te 3 kropeczki na dole
 void Cave::addstorage()
 {
     if (!pointsphoto.loadFromFile("aazdj/kropki.png"))
@@ -100,7 +104,7 @@ void Cave::addstorage()
     // skala1.setPosition(300.0f, 300.0f);
     // skala1.setScale(0.5f, 0.5f);
 }
-
+//Oblicza czas skaly wygenerowanej i sprawia że rośnie
 void Cave::renderskala() {
     if (isRightMouseDown) {
         elapsedskala = clockskala.getElapsedTime();
@@ -128,7 +132,7 @@ void Cave::renderskala() {
     isRightMouseDown = false; // Resetowanie stanu trzymania myszy
     }
     }
-
+//generuje do paska po zniknieciu skaly wartosci miedz zloto itd na podstawie procentow
 void Cave::genere_to_pasek()
 {
     randomPercent = std::rand() % 10001;
@@ -258,16 +262,13 @@ void Cave::genere_to_pasek()
         }
     }
 }
-
+//generuje wartości na pasku na dole 
 void Cave::addToPasek()
 {
     int position = 270;
     int interval = 150;
     int displayedValues = 0;
     int displayedVal = 0;
-    // MouseHoverDisplay hoverDisplay(window, ReadSigns,true);
-    // sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-    // hoverDisplay.displayImageOnHover(mousePosition);
     int numIterations = std::min(static_cast<int>(ReadSigns.size()), 4);
     for (int i = 0; i < numIterations; i++)
     {
@@ -493,6 +494,7 @@ void Cave::addToPasek()
         position += interval;
     }
     xPos = 220;
+    //generuje ilośc elementów
     for (int i = 0; i < numIterations; ++i)
     {
         xPos += 140;
@@ -517,7 +519,7 @@ void Cave::handleEvents()
 
         else if (event.type == sf::Event::MouseButtonPressed)
         {
-            if (openwerehouse)
+            if (openwerehouse)//klasa która otwiera magazyn
             {
 
                 openall->handleMouseEvent(event);
@@ -525,6 +527,7 @@ void Cave::handleEvents()
                 Readvalues = openall->getIntValues();
             }
         }
+        //jeśli naciśniesz spacje generuje Ci skale i jej miejsce obraz i skale
         else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
         {
             isShowing = true;
@@ -550,7 +553,7 @@ void Cave::handleEvents()
             skala1.setScale(scaleFactorX, scaleFactorX);
             std::cout << randomIndex << std::endl;
         }
-
+//gdy naciśniesz skala niech czas leci
         if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
             if (skala1.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
@@ -586,21 +589,20 @@ void Cave::handleEvents()
             sf::Vector2<int> mousePosInt(static_cast<int>(mousePosFloat.x), static_cast<int>(mousePosFloat.y));
 if (skala1.getGlobalBounds().contains(mousePos)) {
         isRightMouseDown = false; // Ustawienie flagi na false gdy puścimy skala1
-        // Możesz również tutaj zachować czas, który upłynął do tej pory
     }
 
 
             if (exit.isHoveredButton())
             {
-                switchTofarm();
+                switchTofarm();//wyjście
             }
             else if (znakzapytania.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
             {
-                pomocotwarta = true;
+                pomocotwarta = true;//znakzapytanie 
             }
             else if (wyjscietablica.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
             {
-                pomocotwarta = false;
+                pomocotwarta = false;//wyjście ze znaku zapytania 
             }
             else if (points.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
             {
@@ -609,7 +611,7 @@ if (skala1.getGlobalBounds().contains(mousePos)) {
         }
     }
 }
-
+//generuje znak zapytania w rogu strony
 void Cave::addhelp()
 {
     if (!zapytaniezdj.loadFromFile("znakzapytania/zapytanie2.png"))
@@ -620,6 +622,7 @@ void Cave::addhelp()
     znakzapytania.setPosition(1080.0f, 660.0f);
     znakzapytania.setScale(0.2f, 0.2f);
 }
+//generuje tablice po otworzeniu znaku zapytania
 void Cave::znakpomocy()
 {
     if (!tablicapomoczdj.loadFromFile("znakzapytania/kopalniatablica.png"))
@@ -639,7 +642,7 @@ void Cave::znakpomocy()
 void Cave::run()
 {
     renderTopasek();
-    openall = new Openall(window, ReadSigns, Readvalues);
+    openall = new Openall(window, ReadSigns, Readvalues);//deklaracja klasy openall
     while (window.isOpen())
     {
         handleEvents();
@@ -647,7 +650,7 @@ void Cave::run()
         renderskala();
     }
 }
-
+//zapisuje do pliku wartości po wyjściu z klasy
 void Cave::switchplace()
 {
     std::ofstream wypiszFile("wypisz_values.txt");
@@ -700,9 +703,9 @@ void Cave::render()
         window.draw(skala1);
     }
     std::cout << elapsedskala.asSeconds() << std::endl;
-    std::ifstream zlotowkiFile("zlotowki_value.txt");
+    std::ifstream zlotowkiFile("zlotowki_value.txt");//wychytuje pieniądze z pliku
     zlotowkiText.setString(std::to_string(zlotowkiValue));
-    window.draw(zlotowkiText);
+    window.draw(zlotowkiText);//wyświetla je
     addhelp();
     if (pomocotwarta)
     {
