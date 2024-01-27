@@ -854,7 +854,6 @@ void Orchard::handleEvents()
                                 }
                                 else
                                 {
-                                    // PrintLine[i] = false;
                                     zasadzonepszenica = false;
                                     Readvalues.erase(Readvalues.begin() + i);
                                     ReadSigns.erase(ReadSigns.begin() + i);
@@ -879,7 +878,6 @@ void Orchard::handleEvents()
                                 }
                                 else
                                 {
-                                    // PrintLine[i] = false;
                                     zasadzonemarchew = false;
                                     Readvalues.erase(Readvalues.begin() + i);
                                     ReadSigns.erase(ReadSigns.begin() + i);
@@ -902,7 +900,6 @@ void Orchard::handleEvents()
                                 }
                                 else
                                 {
-                                    // PrintLine[i] = false;
                                     zasadzonetruskawka = false;
                                     Readvalues.erase(Readvalues.begin() + i);
                                     ReadSigns.erase(ReadSigns.begin() + i);
@@ -929,7 +926,7 @@ void Orchard::handleEvents()
                         clocksadzonki.erase(clocksadzonki.begin() + i);
                         clicked = true;
                         added--;
-                        char znak = 'A'; // Twój znak do dodania
+                        char znak = 'A'; 
                         bool znaleziono = false;
                         for (int j = 0; j < ReadSigns.size(); j++)
                         {
@@ -970,7 +967,7 @@ void Orchard::handleEvents()
                         clocksadzonki.erase(clocksadzonki.begin() + i);
                         clicked = true;
                         added--;
-                        char znak = 'E'; // Twój znak do dodania
+                        char znak = 'E'; 
                         bool znaleziono = false;
                         for (int j = 0; j < ReadSigns.size(); j++)
                         {

@@ -545,9 +545,6 @@ void Garden::addToPasek()
     int interval = 150;
     int displayedVal = 0;
     int displayedValues = 0;
-   //MouseHoverDisplay hoverDisplay(window, ReadSigns,true);
-   //sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-   //hoverDisplay.displayImageOnHover(mousePosition);
     int numIterations = std::min(static_cast<int>(ReadSigns.size()), 4);
     for (int i = 0; i < numIterations; i++)
     {
@@ -871,7 +868,7 @@ void Garden::handleEvents()
         }
         else if (event.type == sf::Event::MouseButtonPressed)
         {
-            //handleMouseClick(event);
+
             if (openwerehouse)
             {
 
@@ -880,13 +877,7 @@ void Garden::handleEvents()
                 Readvalues = openall->getIntValues();
             }
         }
-        // else if (event.mouseButton.button == sf::Mouse::Left) {
-        // Jakieś operacje, które mogą zmodyfikować ReadSigns
-        // ...
 
-        // Aktualizacja HoverDisplays po modyfikacji ReadSigns
-        
-    //}
         else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
         {
 
@@ -921,7 +912,6 @@ void Garden::handleEvents()
                                 }
                                 else
                                 {
-                                    // PrintLine[i] = false;
                                     zasadzonepszenica = false;
                                     Readvalues.erase(Readvalues.begin() + i);
                                     ReadSigns.erase(ReadSigns.begin() + i);
@@ -946,7 +936,6 @@ void Garden::handleEvents()
                                 }
                                 else
                                 {
-                                    // PrintLine[i] = false;
                                     zasadzonemarchew = false;
                                     Readvalues.erase(Readvalues.begin() + i);
                                     ReadSigns.erase(ReadSigns.begin() + i);
@@ -995,7 +984,7 @@ void Garden::handleEvents()
                         clocksadzonki.erase(clocksadzonki.begin() + i);
                         clicked = true;
                         added--;
-                        char znak = 'P'; // Twój znak do dodania
+                        char znak = 'P'; 
                         int wartosc;
                         bool znaleziono = false;
                         for (int j = 0; j < ReadSigns.size(); j++)
